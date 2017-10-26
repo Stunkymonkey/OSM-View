@@ -68,42 +68,19 @@ public class fileread {
 	}
 
 	public void createLUT() {
-		LUT = new int[this.AmountNodes + 1];
-		int temp_node = AmountNodes-1;
-		int temp;
-		LUT[0] = 0;
-		int j;
+		LUT = new int[this.AmountNodes +1];
 		LUT[AmountNodes] = AmountEdges;
-		for (int i = src.length-1; i > 0; i--) {
-			temp = src[i];
-			if (temp_node == src[i]) {
-				temp_node = src[i];
-			} else if (temp_node == (src[i]+1)) {
-				LUT[temp_node] = i+1;
-				temp_node = src[i];
-			} else if (temp < src[i] + 1) {
-				for(j=temp_node; j > src[i]; j-- ) {
-					LUT[j] = i+1;
-				}
-				i = j;
+		int current_node = -1;
+		for (int i = 0; i < src.length; i++) {
+			if (current_node < src[i]) {
+				current_node = src[i];
+				if (current_node > 0) {
+					for (int j = 0; j < (src[i]-src[i-1]); j++) {
+						LUT[current_node - j] = i;
+					}
+				}				
 			}
-			
-			
 		}
-
-		// for (int i = src.length-1; i > 0; i--) {
-		// System.out.println("temp"+temp_node);
-		// if (temp_node == src[i]) {
-		// break;
-		// } else if(temp_node == src[i]-1) {
-		// LUT[src[i]] = i;
-		// temp_node = temp_node -1;
-		//
-		// } else if(temp_node >= src[i]-2) {
-		// LUT[src[i]] = i;
-		// }
-		//
-		// }
 	}
 
 	public String getLine() {
