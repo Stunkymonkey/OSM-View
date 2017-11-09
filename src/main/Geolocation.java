@@ -5,14 +5,8 @@ import java.util.Arrays;
 public class Geolocation {
 
 	public void createGrid() {
-		double min_lat = Arrays.stream(Fileread.latitude).min().getAsDouble();
-		double max_lat = Arrays.stream(Fileread.latitude).max().getAsDouble();
-		
-		double min_lon = Arrays.stream(Fileread.longitude).min().getAsDouble();
-		double max_lon = Arrays.stream(Fileread.longitude).max().getAsDouble();
 		
 		int skal = 10000;
-		
 		int min_lat_int = (int)(min_lat*skal);
 		int max_lat_int = (int)(max_lat*skal);
 		int min_lon_int = (int)(min_lon*skal);
