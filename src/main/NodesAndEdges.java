@@ -1,18 +1,20 @@
 package main;
 
-public class Arrays {
-	public static void initArrays() {
-		Data.source = new int[Data.AmountEdges];
-		Data.target = new int[Data.AmountEdges];
-		Data.weight = new int[Data.AmountEdges];
-		Data.latitude = new double[Data.AmountNodes];
-		Data.longitude = new double[Data.AmountNodes];
-	}
+public class NodesAndEdges {
 
 	public static void createArrays() {
+		initArrays();
 		createNodeTable();
 		createEdgeTables();
 		createOffsetTable();
+	}
+	
+	private static void initArrays() {
+		Data.source = new int[Data.AmountEdges];
+		Data.target = new int[Data.AmountEdges];
+		Data.weight = new int[Data.AmountEdges];
+		Data.x_buckets = new double[Data.AmountNodes];
+		Data.y_buckets = new double[Data.AmountNodes];
 	}
 
 	private static void createNodeTable() {
@@ -21,20 +23,22 @@ public class Arrays {
 
 		for (int i = 0; i < Data.AmountNodes; i++) {
 			line = Fileread.getLine();
-			System.out.println(line);
 			tmpArray = line.split(" ");
 
-			Data.latitude[i] = Double.parseDouble(tmpArray[2]);
-			Data.longitude[i] = Double.parseDouble(tmpArray[3]);
-			if (Data.latitude[i] > Data.max_lat) {
-				Data.max_lat = Data.latitude[i];
-			} else if (Data.latitude[i] < Data.min_lat) {
-				Data.min_lat = Data.latitude[i];
+			Data.x_buckets[i] = Double.parseDouble(tmpArray[2]);
+			Data.y_buckets[i] = Double.parseDouble(tmpArray[3]);
+			
+			if (Data.x_buckets[i] > Data.max_x) {
+				Data.max_x = Data.x_buckets[i];
 			}
-			if (Data.longitude[i] > Data.max_lon) {
-				Data.max_lon = Data.longitude[i];
-			} else if (Data.longitude[i] < Data.min_lon) {
-				Data.min_lon = Data.longitude[i];
+			if (Data.x_buckets[i] < Data.min_x) {
+				Data.min_x = Data.x_buckets[i];
+			}
+			if (Data.y_buckets[i] > Data.max_y) {
+				Data.max_y = Data.y_buckets[i];
+			}
+			if (Data.y_buckets[i] < Data.min_y) {
+				Data.min_y = Data.y_buckets[i];
 			}
 		}
 	}
@@ -49,9 +53,6 @@ public class Arrays {
 			Data.source[i] = Integer.parseInt(tmpArray[0]);
 			Data.target[i] = Integer.parseInt(tmpArray[1]);
 			Data.weight[i] = Integer.parseInt(tmpArray[2]);
-			for (int j = 0; j < Data.source.length; j++) {
-				System.out.println(j + ": " + Data.source[j]);
-			}
 		}
 	}
 

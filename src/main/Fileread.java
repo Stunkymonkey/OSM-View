@@ -25,7 +25,7 @@ public class Fileread {
 			System.out.println("Unable to open file '" + fileName + "'");
 		} catch (IOException e) {
 			System.out.println("Error reading file '" + fileName + "'");
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 
