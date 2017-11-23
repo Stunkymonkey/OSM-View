@@ -4,8 +4,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		String filename;
-//		filename = "toy.fmi";
-		filename = "MV.fmi";
+		filename = "toy.fmi";
+//		filename = "MV.fmi";
 //		filename = "stgtregbz.fmi";
 //		filename = "bw.fmi";
 
