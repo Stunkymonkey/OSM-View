@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
+
 public class Geo {
 
 	public static void createGrid() {
@@ -37,7 +39,21 @@ public class Geo {
 		}
 		return new int[] { x_result, y_result };
 	}
-
+	public static ArrayList<Integer> calcIntersection(int x_index, int y_index) {
+		ArrayList<Integer> intersection = new ArrayList<>();
+		ArrayList<Integer> line = Data.gridX[x_index];
+		ArrayList<Integer> column = Data.gridY[y_index];
+		for (int i = 0; i < line.size(); i++) {
+			if (column.contains(i)) {
+				intersection.add(line.get(i));
+			}
+		}
+		
+		return intersection;
+	}
+	
+	
+	//mit getGridpos x und y werte holen, damit die arraylisten holen damit die indize schnittmenge holen 
 	public static int getQuarter(double x_click, double y_click, int grid) {
 		int quarter = 0;
 		if (grid + Data.gridStepSizeX / 2 >= x_click) {
@@ -93,6 +109,8 @@ public class Geo {
 
 	// kriegt array von umliegenden punkten und berechnet min distanz
 	public static double[] getClosestPoint(double[] x_pointsAroundClick, double[] y_pointsAroundClick) {
+		// für x und y int liste mit indizes von buckets
+		// punkt zum vergleichen übergeben 
 		double cp_x = x_pointsAroundClick[0];
 		double cp_y = y_pointsAroundClick[0];
 		double min_distance = Double.MAX_VALUE;
@@ -116,11 +134,9 @@ public class Geo {
 			tmp = getGridPosition(Data.x_buckets[i], Data.y_buckets[i]);
 			if (Data.gridX[tmp[0]] == null) {
 				Data.gridX[tmp[0]] = new ArrayList<Integer>();
-				;
 			}
 			if (Data.gridY[tmp[1]] == null) {
 				Data.gridY[tmp[1]] = new ArrayList<Integer>();
-				;
 			}
 			Data.gridX[tmp[0]].add(i);
 			Data.gridY[tmp[1]].add(i);
