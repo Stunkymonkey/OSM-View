@@ -8,21 +8,29 @@ public class Main {
 	public static void main(String[] args) {
 		String filename;
 		filename = "toy.fmi";
-//		filename = "MV.fmi";
-//		filename = "stgtregbz.fmi";
-//		filename = "bw.fmi";
+		filename = "MV.fmi";
+		// filename = "stgtregbz.fmi";
+		// filename = "bw.fmi";
 
 		Data.fr = new Fileread(filename);
 		NodesAndEdges.createArrays();
-//		Data.PrintEverything();
+		// Data.PrintEverything();
 		Geo.createGrid();
-		List<Integer> path = Dijkstra.findWay(0, 3);
-//		List<Integer> path = Dijkstra.findWay(20, 40);
+		List<Integer> path = Dijkstra.findWay(68015, 432251);
+		// List<Integer> path = Dijkstra.findWay(20, 40);
 		System.out.println(Arrays.toString(path.toArray()));
-		for (Integer integer : path) {
-			System.out.println(integer);
-			System.out.println(Data.x_buckets[integer]);
-			System.out.println(Data.y_buckets[integer]);
-		}
+		// for (Integer integer : path) {
+		// System.out.println(integer);
+		// System.out.println(Data.x_buckets[integer]);
+		// System.out.println(Data.y_buckets[integer]);
+		// }
+		path = Dijkstra.findWay(67085, 68015);
+		// List<Integer> path = Dijkstra.findWay(20, 40);
+		System.out.println(Arrays.toString(path.toArray()));
+		// for (Integer integer : path) {
+		// System.out.println(integer);
+		// System.out.println(Data.x_buckets[integer]);
+		// System.out.println(Data.y_buckets[integer]);
+		// }
 	}
 }

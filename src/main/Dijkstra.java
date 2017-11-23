@@ -8,10 +8,13 @@ import java.util.PriorityQueue;
 public class Dijkstra {
 	private static int[] distance;
 	private static boolean[] visited;
-	private static List<Integer> parent;
 	private static List<Integer> shortestPath;
 	private static PriorityQueue<Tuple> unvisited;
 
+	/**
+	 * this class is needed for PriorityQueue: with comparable we are able to sort
+	 * the nodes by weight
+	 */
 	static class Tuple implements Comparable<Tuple> {
 		int weight;
 		int node;
@@ -36,10 +39,10 @@ public class Dijkstra {
 	}
 
 	public static List<Integer> findWay(int start, int goal) {
-		/*
+		/**
 		 * find way from start to goal using Dijkstra
 		 */
-		if (start >= Data.AmountNodes || goal >= Data.AmountNodes ) {
+		if (start >= Data.AmountNodes || goal >= Data.AmountNodes) {
 			System.out.println(("Node not found"));
 			return shortestPath;
 		}
@@ -49,17 +52,26 @@ public class Dijkstra {
 		while (!unvisited.isEmpty()) {
 			current = unvisited.remove().getNode();
 			if (current == goal) {
+				shortestPath.add(current);
 				System.out.println("Distance: " + distance[goal]);
 				// TODO
-				// reconstruct path from parent
-				// but the printed distance is correct i think
+				// reconstruct path from shortestPath
+				// but the printed distance is correct i think/hope
+				// there might be a trick in solving this
+				// but be careful not to use much ram
 				return shortestPath;
 			}
 			neighbors = getNeighbors(current);
-			for (int i : neighbors) {
+			// System.out.println("Array: " + Arrays.toString(neighbors));
+			for (int h = 0; neighbors.length > h; h++) {
+				int i = neighbors[h];
+				int j = Data.OffsetTable[current] + h;
+				// System.out.println("source: " + Data.source[j] + " target: " + Data.target[j]
+				// + " weight: " + Data.weight[j]);
 				if (!visited[i]) {
-					int totalDistance = distance[current] + Data.weight[i];
-					if(totalDistance < distance[i]){
+					shortestPath.add(i);
+					int totalDistance = distance[current] + Data.weight[j];
+					if (totalDistance < distance[i]) {
 						distance[i] = totalDistance;
 						visited[i] = true;
 						unvisited.add(new Tuple(i, totalDistance));
@@ -72,14 +84,13 @@ public class Dijkstra {
 	}
 
 	public static void initialize(int start) {
-		/*
+		/**
 		 * initialize every distance with infinity, except the start setting to 0
 		 */
 		distance = new int[Data.AmountNodes];
 		visited = new boolean[Data.AmountNodes];
 		unvisited = new PriorityQueue<Tuple>();
 		shortestPath = new LinkedList<Integer>();
-		parent = new LinkedList<Integer>();
 		for (int i = 0; i < Data.AmountNodes; i++) {
 			distance[i] = Integer.MAX_VALUE;
 		}
@@ -90,7 +101,7 @@ public class Dijkstra {
 	private static int getMinPathNode(int node) {
 		/**
 		 * method to return minimum node connected to current do not delete it, might be
-		 * useful
+		 * useful later
 		 */
 		int min = Integer.MAX_VALUE;
 		int index = 0;
@@ -110,16 +121,5 @@ public class Dijkstra {
 		int start = Data.OffsetTable[node];
 		int end = Data.OffsetTable[node + 1];
 		return Arrays.copyOfRange(Data.target, start, end);
-	}
-
-	private static void addNeighborsToQueue(int node) {
-		/**
-		 * add neighbors to unvisited-queue, but reachable
-		 */
-		int[] neighbors = getNeighbors(node);
-		for (int i : neighbors) {
-			unvisited.offer(new Tuple(i, distance[node] + Data.weight[i]));
-		}
-		return;
 	}
 }
