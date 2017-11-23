@@ -1,5 +1,7 @@
 package main;
 
+import java.util.PriorityQueue;
+
 public class Dijkstra {
 	
 	public static int preNode;
@@ -7,17 +9,20 @@ public class Dijkstra {
 	public static int[] allNodes = new int[Data.AmountNodes];
 	public static int newDistance;
 	public static int minNode;
+	public static PriorityQueue<Integer> minDis;
 	
 	public static int algo() {
 		initialize();
-		 //while (allNodes != null) {
-			// minNode = node mit kleinstem abstand vom startknoten aus
-			//delete minNode aus allNodes
-			//if (Data.target = Data.source[minNode]) {
-				distance();
-			//}
-		//}
-		return preNode;
+		   while (allNodes != null) {
+			   	minDis = new PriorityQueue<Integer>();
+			   	for (int i = 0; i <= allNodes.length;i++)
+			   		minDis.offer(Data.weight[i]);
+			   	// if (vom startknoten target = minDis.poll())
+			   	// do: return minNode & delete minNode aus allNodes
+			   		
+		   }
+		distance();
+		return minNode;
 	}
 	
 	
