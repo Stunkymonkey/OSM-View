@@ -11,10 +11,10 @@ public class Main {
 		startTime = System.currentTimeMillis();
 		String filename;
 		// filename = "toy.fmi";
-		// filename = "MV.fmi";
+		 filename = "MV.fmi";
 		// filename = "stgtregbz.fmi";
 		// filename = "bw.fmi";
-		filename = "germany.fmi";
+//		filename = "germany.fmi";
 
 		Data.fr = new Fileread(filename);
 		NodesAndEdges.createArrays();
@@ -22,7 +22,7 @@ public class Main {
 		// Data.PrintEverything();
 		Geo.createGrid();
 		System.out.println(System.currentTimeMillis() - Main.startTime + " ms");
-		List<Integer> path = Dijkstra.findWay(8371826, 16743651);
+		List<Integer> path = Dijkstra.findWay(214733, 429467);
 		System.out.println(System.currentTimeMillis() - Main.startTime + " ms");
 		System.out.println(Arrays.toString(path.toArray()));
 		// for (Integer integer : path) {

@@ -13,8 +13,8 @@ public class NodesAndEdges {
 		Data.source = new int[Data.AmountEdges];
 		Data.target = new int[Data.AmountEdges];
 		Data.weight = new int[Data.AmountEdges];
-		Data.x_buckets = new double[Data.AmountNodes];
-		Data.y_buckets = new double[Data.AmountNodes];
+		Data.x_dim = new double[Data.AmountNodes];
+		Data.y_dim = new double[Data.AmountNodes];
 	}
 
 	private static void createNodeTable() {
@@ -25,20 +25,20 @@ public class NodesAndEdges {
 			line = Fileread.getLine();
 			tmpArray = line.split(" ");
 
-			Data.x_buckets[i] = Double.parseDouble(tmpArray[2]);
-			Data.y_buckets[i] = Double.parseDouble(tmpArray[3]);
+			Data.x_dim[i] = Double.parseDouble(tmpArray[2]);
+			Data.y_dim[i] = Double.parseDouble(tmpArray[3]);
 			
-			if (Data.x_buckets[i] > Data.max_x) {
-				Data.max_x = Data.x_buckets[i];
+			if (Data.x_dim[i] > Data.max_x) {
+				Data.max_x = Data.x_dim[i];
 			}
-			if (Data.x_buckets[i] < Data.min_x) {
-				Data.min_x = Data.x_buckets[i];
+			if (Data.x_dim[i] < Data.min_x) {
+				Data.min_x = Data.x_dim[i];
 			}
-			if (Data.y_buckets[i] > Data.max_y) {
-				Data.max_y = Data.y_buckets[i];
+			if (Data.y_dim[i] > Data.max_y) {
+				Data.max_y = Data.y_dim[i];
 			}
-			if (Data.y_buckets[i] < Data.min_y) {
-				Data.min_y = Data.y_buckets[i];
+			if (Data.y_dim[i] < Data.min_y) {
+				Data.min_y = Data.y_dim[i];
 			}
 		}
 	}
