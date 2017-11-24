@@ -92,22 +92,6 @@ public class Dijkstra {
 		distance[start] = 0;
 	}
 
-	private static int getMinPathNode(int node) {
-		/**
-		 * method to return minimum node connected to current do not delete it, might be
-		 * useful later
-		 */
-		int min = Integer.MAX_VALUE;
-		int index = 0;
-		for (int j = Data.OffsetTable[node]; j < Data.OffsetTable[node + 1]; j++) {
-			if (Data.weight[j] < min) {
-				min = Data.weight[j];
-				index = j;
-			}
-		}
-		return Data.target[index];
-	}
-
 	private static int[] getNeighbors(int node) {
 		/**
 		 * return neighbors of node
