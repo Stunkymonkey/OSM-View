@@ -2,8 +2,6 @@ package main;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 public class Geo {
 
 	public static void createGrid() {
@@ -39,59 +37,43 @@ public class Geo {
 		}
 		return new int[] { x_result, y_result };
 	}
+//kreigt 2 listen (mit allen kästchen aus x / y schon davor zusammengefügt)
 	public static ArrayList<Integer> calcIntersection(int x_index, int y_index) {
 		ArrayList<Integer> intersection = new ArrayList<>();
 		ArrayList<Integer> line = Data.gridX[x_index];
 		ArrayList<Integer> column = Data.gridY[y_index];
-		for (int i = 0; i < line.size(); i++) {
+		for (int i : line) {
 			if (column.contains(i)) {
-				intersection.add(line.get(i));
+				intersection.add(i);
 			}
 		}
-		
 		return intersection;
 	}
-	
-	
-	//mit getGridpos x und y werte holen, damit die arraylisten holen damit die indize schnittmenge holen 
-	public static int getQuarter(double x_click, double y_click, int grid) {
+
+	// mit getGridpos x und y werte holen, damit die arraylisten holen damit die
+	// indize schnittmenge holen
+	public static int getQuarter(double x_click, double y_click, int[] grid) {
 		int quarter = 0;
-		if (grid + Data.gridStepSizeX / 2 >= x_click) {
-			if (grid + Data.gridStepSizeY / 2 >= y_click) {
+		if (grid[0] + Data.gridStepSizeX / 2 >= x_click) {
+			if (grid[1] + Data.gridStepSizeY / 2 >= y_click) {
 				quarter = 1;
-			} else if (grid + Data.gridStepSizeY / 2 <= y_click) {
+			} else if (grid[1] + Data.gridStepSizeY / 2 <= y_click) {
 				quarter = 3;
 			}
 
-		} else if (grid + Data.gridStepSizeX / 2 <= x_click) {
-			if (grid + Data.gridStepSizeY / 2 >= y_click) {
+		} else if (grid[0] + Data.gridStepSizeX / 2 <= x_click) {
+			if (grid[1] + Data.gridStepSizeY / 2 >= y_click) {
 				quarter = 2;
-			} else if (grid + Data.gridStepSizeY / 2 <= y_click) {
+			} else if (grid[1] + Data.gridStepSizeY / 2 <= y_click) {
 				quarter = 4;
 			}
 		}
 		return quarter;
 	}
+	//TODO: getboundsmethode(x,y,r) : typ array[[x1,x2][y1,y2]]
+	//TODO: getPointsinBounds(low,up,dim) : typ linkedliste
+	public static ArrayList<Integer> getPointsAroundClick(double x_click, double y_click) {
 
-	public static void getPointsAroundClick(double x_click, double y_click) {
-		int grid = 0; // das muss das grid sein in dem der klick ist
-		switch (getQuarter(x_click, y_click, grid)) {
-		case 1:
-			// oben links
-			break;
-
-		case 2:
-			// oben rechts
-			break;
-		
-		case 3:
-			//unten links
-			break;
-			
-		case 4:
-			// unten rechts
-			break;
-		}
 		// berechne in welchem viertel von Grid click ist
 		// ist in diesem Kästchen ein punkt?
 		// Ja:
@@ -101,6 +83,64 @@ public class Geo {
 		// Nein:
 		// nehme die 8 umliegenden kästchen
 		// immer noch nix? weiter nach aussen
+		ArrayList<Integer> pointsAroundClick = null;
+		int[] grid = getGridPosition(x_click, y_click); // das muss das grid sein in dem der klick ist
+		int x_lower_bound = 0;
+		int x_upper_bound = 0;
+		int y_lower_bound = 0;
+		int y_upper_bound = 0;
+
+		switch (getQuarter(x_click, y_click, grid)) {
+		default:
+			x_lower_bound = -1;
+			x_upper_bound = 1;
+			y_lower_bound = -1;
+			y_upper_bound = 1;
+
+			break;
+		case 1:
+			// oben links
+			x_lower_bound = -1;
+			x_upper_bound = 0;
+			y_lower_bound = 0;
+			y_upper_bound = 1;
+
+			break;
+
+		case 2:
+			// oben rechts
+			x_lower_bound = 0;
+			x_upper_bound = 1;
+			y_lower_bound = 0;
+			y_upper_bound = 1;
+
+			break;
+
+		case 3:
+			// unten links
+			x_lower_bound = -1;
+			x_upper_bound = 0;
+			y_lower_bound = -1;
+			y_upper_bound = 0;
+
+			break;
+
+		case 4:
+			// unten rechts
+			x_lower_bound = 0;
+			x_upper_bound = 1;
+			y_lower_bound = 0;
+			y_upper_bound = 1;
+
+			break;
+		}
+		for (int i = grid[0] + x_lower_bound; i <= grid[0] + x_upper_bound; i++) {
+			for (int j = grid[1] + y_lower_bound; j <= grid[1] + y_upper_bound; j++) {
+				pointsAroundClick.addAll(calcIntersection(i, j));
+			}
+		}
+
+		return pointsAroundClick;
 	}
 
 	public static double getDistance(double x1, double y1, double x2, double y2) {
@@ -108,20 +148,21 @@ public class Geo {
 	}
 
 	// kriegt array von umliegenden punkten und berechnet min distanz
-	public static double[] getClosestPoint(double[] x_pointsAroundClick, double[] y_pointsAroundClick) {
+	public static double[] getClosestPoint(double x, double y, ArrayList<Integer> indices) {
 		// für x und y int liste mit indizes von buckets
-		// punkt zum vergleichen übergeben 
-		double cp_x = x_pointsAroundClick[0];
-		double cp_y = y_pointsAroundClick[0];
+		// punkt zum vergleichen übergeben
+		double cp_x = Data.x_buckets[0];
+		double cp_y = Data.y_buckets[0];
 		double min_distance = Double.MAX_VALUE;
-		for (int i = 1; i < x_pointsAroundClick.length; i++) {
-			double tmp_distance = getDistance(x_pointsAroundClick[i - 1], y_pointsAroundClick[i - 1],
-					x_pointsAroundClick[i], y_pointsAroundClick[i]);
-			if (tmp_distance <= min_distance) {
 
-				cp_x = x_pointsAroundClick[i - 1];
-				cp_y = y_pointsAroundClick[i - 1];
+		for (int i = 0; i < indices.size(); i++) {
+			double min_x = Data.x_buckets[indices.get(i)];
+			double min_y = Data.y_buckets[indices.get(i)];
+			double tmp_distance = getDistance(x, y, min_x, min_y);
+			if (tmp_distance <= min_distance) {
 				min_distance = tmp_distance;
+				cp_x = min_x;
+				cp_y = min_y;
 			}
 		}
 
