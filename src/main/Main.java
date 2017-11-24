@@ -17,7 +17,6 @@ public class Main {
 		// Data.PrintEverything();
 		Geo.createGrid();
 		List<Integer> path = Dijkstra.findWay(68015, 432251);
-		// List<Integer> path = Dijkstra.findWay(20, 40);
 		System.out.println(Arrays.toString(path.toArray()));
 		// for (Integer integer : path) {
 		// System.out.println(integer);
@@ -25,7 +24,6 @@ public class Main {
 		// System.out.println(Data.y_buckets[integer]);
 		// }
 		path = Dijkstra.findWay(67085, 68015);
-		// List<Integer> path = Dijkstra.findWay(20, 40);
 		System.out.println(Arrays.toString(path.toArray()));
 		// for (Integer integer : path) {
 		// System.out.println(integer);

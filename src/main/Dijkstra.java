@@ -8,7 +8,7 @@ import java.util.PriorityQueue;
 public class Dijkstra {
 	private static int[] distance;
 	private static boolean[] visited;
-	private static List<Integer> shortestPath;
+	private static int[] parent;
 	private static PriorityQueue<Tuple> unvisited;
 
 	/**
@@ -44,7 +44,7 @@ public class Dijkstra {
 		 */
 		if (start >= Data.AmountNodes || goal >= Data.AmountNodes) {
 			System.out.println(("Node not found"));
-			return shortestPath;
+			return new LinkedList<Integer>();
 		}
 		initialize(start);
 		int current;
@@ -52,14 +52,8 @@ public class Dijkstra {
 		while (!unvisited.isEmpty()) {
 			current = unvisited.remove().getNode();
 			if (current == goal) {
-				shortestPath.add(current);
 				System.out.println("Distance: " + distance[goal]);
-				// TODO
-				// reconstruct path from shortestPath
-				// but the printed distance is correct i think/hope
-				// there might be a trick in solving this
-				// but be careful not to use much ram
-				return shortestPath;
+				return reconstructPath(parent, start, goal);
 			}
 			neighbors = getNeighbors(current);
 			// System.out.println("Array: " + Arrays.toString(neighbors));
@@ -69,18 +63,18 @@ public class Dijkstra {
 				// System.out.println("source: " + Data.source[j] + " target: " + Data.target[j]
 				// + " weight: " + Data.weight[j]);
 				if (!visited[i]) {
-					shortestPath.add(i);
 					int totalDistance = distance[current] + Data.weight[j];
 					if (totalDistance < distance[i]) {
 						distance[i] = totalDistance;
 						visited[i] = true;
+						parent[i] = current;
 						unvisited.add(new Tuple(i, totalDistance));
 					}
 				}
 			}
 		}
 		System.out.println("No Path found");
-		return shortestPath;
+		return new LinkedList<Integer>();
 	}
 
 	public static void initialize(int start) {
@@ -90,7 +84,7 @@ public class Dijkstra {
 		distance = new int[Data.AmountNodes];
 		visited = new boolean[Data.AmountNodes];
 		unvisited = new PriorityQueue<Tuple>();
-		shortestPath = new LinkedList<Integer>();
+		parent = new int[Data.AmountNodes];
 		for (int i = 0; i < Data.AmountNodes; i++) {
 			distance[i] = Integer.MAX_VALUE;
 		}
@@ -121,5 +115,18 @@ public class Dijkstra {
 		int start = Data.OffsetTable[node];
 		int end = Data.OffsetTable[node + 1];
 		return Arrays.copyOfRange(Data.target, start, end);
+	}
+	
+	private static List<Integer> reconstructPath(int[] shortestPath, int start, int goal) {
+		List<Integer> result = new LinkedList<Integer>();
+		int u = goal;
+		while (true) {
+			result.add(0, u);
+			if (u == start) {
+				break;
+			}
+			u = shortestPath[u];
+		}
+		return result;
 	}
 }
