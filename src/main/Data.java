@@ -22,7 +22,7 @@ public class Data {
 	public static double gridSizeY;
 	public static double gridStepSizeX;
 	public static double gridStepSizeY;
-	public static ArrayList<Integer>[] gridX ;
+	public static ArrayList<Integer>[] gridX;
 	public static ArrayList<Integer>[] gridY;
 	
 	public static void PrintEverything() {
