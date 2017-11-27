@@ -39,7 +39,7 @@ public class Geo_reloadet {
 	public static void createGeoTables() {
 		int[] tmp = new int[2];
 		for (int i = 0; i < Data.AmountNodes; i++) {
-			tmp = getGridPosition(Data.x_buckets[i], Data.y_buckets[i]);
+			tmp = getGridPosition(Data.x_dim[i], Data.y_dim[i]);
 			if (Data.gridX[tmp[0]] == null) {
 				Data.gridX[tmp[0]] = new ArrayList<Integer>();
 			}
