@@ -22,6 +22,8 @@ public class Main {
 		// Data.PrintEverything();
 		Geo.createGrid();
 		System.out.println(System.currentTimeMillis() - Main.startTime + " ms");
+		Dijkstra.initDistanceTable();
+		System.out.println(System.currentTimeMillis() - Main.startTime + " ms");
 		List<Integer> path = Dijkstra.findWay(2,4);
 		
 		//System.out.println(Arrays.toString(Geo.getClosestPoint(49.02, 10.02, Geo.calcIntersection(Geo.getGridPosition(49.01, 10.01)[0], Geo.getGridPosition(49.01, 10.01)[1]))));

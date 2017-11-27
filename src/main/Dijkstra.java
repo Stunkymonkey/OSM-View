@@ -77,17 +77,14 @@ public class Dijkstra {
 		return new LinkedList<Integer>();
 	}
 
-	public static void initialize(int start) {
+	private static void initialize(int start) {
 		/**
 		 * initialize every distance with infinity, except the start setting to 0
 		 */
-		distance = new int[Data.AmountNodes];
+		distance = Arrays.copyOf(Data.dijkstraDistances, Data.dijkstraDistances.length);
 		visited = new boolean[Data.AmountNodes];
 		unvisited = new PriorityQueue<Tuple>();
 		parent = new int[Data.AmountNodes];
-		for (int i = 0; i < Data.AmountNodes; i++) {
-			distance[i] = Integer.MAX_VALUE;
-		}
 		unvisited.add(new Tuple(start, 0));
 		distance[start] = 0;
 	}
@@ -112,5 +109,12 @@ public class Dijkstra {
 			u = shortestPath[u];
 		}
 		return result;
+	}
+	
+	public static void initDistanceTable() {
+		Data.dijkstraDistances = new int[Data.AmountNodes];
+		for (int i = 0; i < Data.dijkstraDistances.length; i++) {
+			Data.dijkstraDistances[i] = Integer.MAX_VALUE;
+		}
 	}
 }

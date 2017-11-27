@@ -25,6 +25,8 @@ public class Data {
 	public static ArrayList<Integer>[] gridX;
 	public static ArrayList<Integer>[] gridY;
 	
+	public static int[] dijkstraDistances;
+	
 	public static void PrintEverything() {
 		System.out.println("AmountNodes: " + AmountNodes);
 		System.out.println("AmountEdges: " + AmountEdges);
