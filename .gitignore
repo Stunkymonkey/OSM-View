@@ -22,5 +22,7 @@
 hs_err_pid*
 /bin/
 
-*.fmi
-*.tab
+bw.fmi
+MV.fmi
+stgtregbz.fmi
+germany.fmi

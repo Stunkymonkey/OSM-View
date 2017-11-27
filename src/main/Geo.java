@@ -36,7 +36,7 @@ public class Geo {
 		}
 		return new int[] { x_result, y_result};
 	}
-//kreigt 2 listen (mit allen kaestchen aus x / y schon davor zusammengefuegt)
+//kreigt 2 listen (mit allen kästchen aus x / y schon davor zusammengefügt)
 	public static ArrayList<Integer> calcIntersection(int x_index, int y_index) {
 		ArrayList<Integer> intersection = new ArrayList<>();
 		ArrayList<Integer> line = Data.gridX[x_index];
@@ -74,13 +74,13 @@ public class Geo {
 	public static ArrayList<Integer> getPointsAroundClick(double x_click, double y_click) {
 
 		// berechne in welchem viertel von Grid click ist
-		// ist in diesem Kaestchen ein punkt?
+		// ist in diesem Kästchen ein punkt?
 		// Ja:
-		// nehme die 3 umliegenden kaestchen
+		// nehme die 3 umliegenden kästchen
 		// packe alle punkte aus diesen grids in array -> getclosestpoint
 
 		// Nein:
-		// nehme die 8 umliegenden kaestchen
+		// nehme die 8 umliegenden kästchen
 		// immer noch nix? weiter nach aussen
 		ArrayList<Integer> pointsAroundClick = null;
 		int[] grid = getGridPosition(x_click, y_click); // das muss das grid sein in dem der klick ist
@@ -148,15 +148,15 @@ public class Geo {
 
 	// kriegt array von umliegenden punkten und berechnet min distanz
 	public static double[] getClosestPoint(double x, double y, ArrayList<Integer> indices) {
-		// fuer x und y int liste mit indizes von buckets
-		// punkt zum vergleichen uebergeben
-		double cp_x = Data.x_dim[0];
-		double cp_y = Data.y_dim[0];
+		// für x und y int liste mit indizes von buckets
+		// punkt zum vergleichen übergeben
+		double cp_x = Data.x_buckets[0];
+		double cp_y = Data.y_buckets[0];
 		double min_distance = Double.MAX_VALUE;
 
 		for (int i = 0; i < indices.size(); i++) {
-			double min_x = Data.x_dim[indices.get(i)];
-			double min_y = Data.y_dim[indices.get(i)];
+			double min_x = Data.x_buckets[indices.get(i)];
+			double min_y = Data.y_buckets[indices.get(i)];
 			double tmp_distance = getDistance(x, y, min_x, min_y);
 			if (tmp_distance <= min_distance) {
 				min_distance = tmp_distance;
@@ -171,7 +171,7 @@ public class Geo {
 	public static void createGeoTables() {
 		int[] tmp = new int[2];
 		for (int i = 0; i < Data.AmountNodes; i++) {
-			tmp = getGridPosition(Data.x_dim[i], Data.y_dim[i]);
+			tmp = getGridPosition(Data.x_buckets[i], Data.y_buckets[i]);
 			if (Data.gridX[tmp[0]] == null) {
 				Data.gridX[tmp[0]] = new ArrayList<Integer>();
 			}
