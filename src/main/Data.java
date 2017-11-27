@@ -11,7 +11,7 @@ public class Data {
 	public static int AmountEdges;
 	public static int[] source, target, weight;
 	public static int[] OffsetTable;
-	public static double[] x_buckets, y_buckets;
+	public static double[] x_dim, y_dim;
 	public static double max_x = Double.MIN_VALUE;
 	public static double max_y = Double.MIN_VALUE;
 	public static double min_x = Double.MAX_VALUE;
@@ -22,7 +22,7 @@ public class Data {
 	public static double gridSizeY;
 	public static double gridStepSizeX;
 	public static double gridStepSizeY;
-	public static ArrayList<Integer>[] gridX ;
+	public static ArrayList<Integer>[] gridX;
 	public static ArrayList<Integer>[] gridY;
 	
 	public static void PrintEverything() {
@@ -48,12 +48,12 @@ public class Data {
 		}
 		
 		System.out.println("latitude:");
-		for (int i = 0; i < x_buckets.length; i++) {
-			System.out.println(i + ": " + x_buckets[i]);
+		for (int i = 0; i < x_dim.length; i++) {
+			System.out.println(i + ": " + x_dim[i]);
 		}
 		System.out.println("longitude:");
-		for (int i = 0; i < y_buckets.length; i++) {
-			System.out.println(i + ": " + y_buckets[i]);
+		for (int i = 0; i < y_dim.length; i++) {
+			System.out.println(i + ": " + y_dim[i]);
 		}
 		System.out.println("max_x: " + max_x);
 		System.out.println("max_y: " + max_y);
