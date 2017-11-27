@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,11 +11,11 @@ public class Main {
 	public static void main(String[] args) {
 		startTime = System.currentTimeMillis();
 		String filename;
-		// filename = "toy.fmi";
-		// filename = "MV.fmi";
+		 //filename = "toy.fmi";
+		 filename = "MV.fmi";
 		// filename = "stgtregbz.fmi";
 		// filename = "bw.fmi";
-		filename = "germany.fmi";
+		//filename = "germany.fmi";
 
 		Data.fr = new Fileread(filename);
 		NodesAndEdges.createArrays();
@@ -22,7 +23,9 @@ public class Main {
 		// Data.PrintEverything();
 		Geo.createGrid();
 		System.out.println(System.currentTimeMillis() - Main.startTime + " ms");
-		List<Integer> path = Dijkstra.findWay(8371826, 16743651);
+		List<Integer> path = Dijkstra.findWay(2,4);
+		
+		//System.out.println(Arrays.toString(Geo.getClosestPoint(49.02, 10.02, Geo.calcIntersection(Geo.getGridPosition(49.01, 10.01)[0], Geo.getGridPosition(49.01, 10.01)[1]))));
 		System.out.println(System.currentTimeMillis() - Main.startTime + " ms");
 		System.out.println(Arrays.toString(path.toArray()));
 		// for (Integer integer : path) {
