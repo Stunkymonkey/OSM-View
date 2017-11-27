@@ -82,7 +82,7 @@ public class Geo {
 		// Nein:
 		// nehme die 8 umliegenden kaestchen
 		// immer noch nix? weiter nach aussen
-		ArrayList<Integer> pointsAroundClick = null;
+		ArrayList<Integer> pointsAroundClick = new ArrayList<Integer>();
 		int[] grid = getGridPosition(x_click, y_click); // das muss das grid sein in dem der klick ist
 		int x_lower_bound = 0;
 		int x_upper_bound = 0;
