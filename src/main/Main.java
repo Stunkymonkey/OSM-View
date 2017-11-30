@@ -8,15 +8,18 @@ public class Main {
 		String filename;
 		// filename = "toy.fmi";
 		// filename = "MV.fmi";
-		filename = "stgtregbz.fmi";
+		// filename = "stgtregbz.fmi";
 		// filename = "bw.fmi";
-		// filename = "germany.fmi";
+		filename = "germany.fmi";
 		Main.init(filename);
 
 		List<Integer> path;
-		Dijkstra d = new Dijkstra(2);
+		Dijkstra d;
+		d = new Dijkstra(2);
 
-		path = d.findWay(17402);
+		d.findWay(-1);
+		Helper.Time("Dijkstra all");
+		path = d.findWay(1);
 		Helper.Time("Find Way");
 		Helper.Print(path);
 
@@ -26,6 +29,10 @@ public class Main {
 //				Geo.calcIntersection(Geo.getGridPosition(49.01, 10.01)[0], Geo.getGridPosition(49.01, 10.01)[1])));
 	}
 
+	/**
+	 * prepare everything of the graph to be able to execute Dijkstra
+	 * @param filename
+	 */
 	public static void init(String filename) {
 		Helper.Time("");
 		Data.fr = new Fileread(filename);

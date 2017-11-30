@@ -39,8 +39,12 @@ public class Dijkstra {
 		}
 	}
 	
+	/**
+	 * set the starting point for Dijkstra
+	 * @param start
+	 */
 	public Dijkstra(int start) {
-		if (start >= Data.AmountNodes) {
+		if (start >= Data.AmountNodes || start < 0) {
 			System.out.println(("Start not found"));
 			return;
 		}
@@ -48,13 +52,17 @@ public class Dijkstra {
 		initialize(start);
 	}
 
+	/**
+	 * find goal from given start using Dijkstra
+	 * @param goal set it to a node-index OR set it to -1 to run it on full graph
+	 * @return
+	 */
 	public List<Integer> findWay(int goal) {
-		/**
-		 * find way from start to goal using Dijkstra
-		 */
-		if (goal >= Data.AmountNodes) {
+		if (goal < -1 || goal >= Data.AmountNodes) {
 			System.out.println(("Goal not found"));
 			return new LinkedList<Integer>();
+		} else if (goal != -1 && visited[goal]) {
+			return reconstructPath(parent, start, goal);
 		}
 		int current;
 		int[] neighbors;
@@ -82,31 +90,41 @@ public class Dijkstra {
 				}
 			}
 		}
-		System.out.println("No Path found");
 		return new LinkedList<Integer>();
 	}
 
+	/**
+	 * initialize every distance with infinity, except the start setting to 0
+	 * @param start
+	 */
 	private void initialize(int start) {
-		/**
-		 * initialize every distance with infinity, except the start setting to 0
-		 */
 		distance = Arrays.copyOf(Data.dijkstraDistances, Data.dijkstraDistances.length);
 		visited = new boolean[Data.AmountNodes];
 		unvisited = new PriorityQueue<Tuple>();
 		parent = new int[Data.AmountNodes];
+
 		unvisited.add(new Tuple(start, 0));
 		distance[start] = 0;
 	}
 
+	/**
+	 * get all neighbors of node
+	 * @param node
+	 * @return
+	 */
 	private int[] getNeighbors(int node) {
-		/**
-		 * return neighbors of node
-		 */
 		int start = Data.OffsetTable[node];
 		int end = Data.OffsetTable[node + 1];
 		return Arrays.copyOfRange(Data.target, start, end);
 	}
 	
+	/**
+	 * reconstruct the shortest path 
+	 * @param shortestPath
+	 * @param start
+	 * @param goal
+	 * @return
+	 */
 	private List<Integer> reconstructPath(int[] shortestPath, int start, int goal) {
 		List<Integer> result = new LinkedList<Integer>();
 		int u = goal;
@@ -120,6 +138,9 @@ public class Dijkstra {
 		return result;
 	}
 	
+	/**
+	 * set all distances to "infinity"
+	 */
 	public static void initDistanceTable() {
 		Data.dijkstraDistances = new int[Data.AmountNodes];
 		for (int i = 0; i < Data.dijkstraDistances.length; i++) {

@@ -10,6 +10,9 @@ public class NodesAndEdges {
 		createOffsetTable();
 	}
 	
+	/**
+	 * initialize all arrays
+	 */
 	private static void initArrays() {
 		Data.source = new int[Data.AmountEdges];
 		Data.target = new int[Data.AmountEdges];
@@ -18,6 +21,9 @@ public class NodesAndEdges {
 		Data.y_dim = new double[Data.AmountNodes];
 	}
 
+	/**
+	 * read nodes and save them to tables
+	 */
 	private static void createNodeTable() {
 		String line = null;
 		String[] tmpArray;
@@ -44,6 +50,9 @@ public class NodesAndEdges {
 		}
 	}
 
+	/**
+	 * read edges and save to file
+	 */
 	private static void createEdgeTables() {
 		String line = null;
 		String[] tmpArray;
@@ -57,6 +66,9 @@ public class NodesAndEdges {
 		}
 	}
 
+	/**
+	 * calculate offset Array
+	 */
 	private static void createOffsetTable() {
 		Data.OffsetTable = new int[Data.AmountNodes + 1];
 		Data.OffsetTable[Data.AmountNodes] = Data.AmountEdges;
