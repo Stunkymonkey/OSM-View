@@ -6,6 +6,7 @@ public class NodesAndEdges {
 		initArrays();
 		createNodeTable();
 		createEdgeTables();
+		Helper.Time("Read File");
 		createOffsetTable();
 	}
 	

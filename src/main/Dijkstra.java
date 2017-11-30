@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class Dijkstra {
-	private static int[] distance;
-	private static boolean[] visited;
-	private static int[] parent;
-	private static PriorityQueue<Tuple> unvisited;
+	private int[] distance;
+	private boolean[] visited;
+	private int[] parent;
+	private PriorityQueue<Tuple> unvisited;
+	private int start;
 
 	/**
 	 * this class is needed for PriorityQueue: with comparable we are able to sort
@@ -37,16 +38,24 @@ public class Dijkstra {
 			return this.weight - tup.weight;
 		}
 	}
+	
+	public Dijkstra(int start) {
+		if (start >= Data.AmountNodes) {
+			System.out.println(("Start not found"));
+			return;
+		}
+		this.start = start;
+		initialize(start);
+	}
 
-	public static List<Integer> findWay(int start, int goal) {
+	public List<Integer> findWay(int goal) {
 		/**
 		 * find way from start to goal using Dijkstra
 		 */
-		if (start >= Data.AmountNodes || goal >= Data.AmountNodes) {
-			System.out.println(("Node not found"));
+		if (goal >= Data.AmountNodes) {
+			System.out.println(("Goal not found"));
 			return new LinkedList<Integer>();
 		}
-		initialize(start);
 		int current;
 		int[] neighbors;
 		while (!unvisited.isEmpty()) {
@@ -77,7 +86,7 @@ public class Dijkstra {
 		return new LinkedList<Integer>();
 	}
 
-	private static void initialize(int start) {
+	private void initialize(int start) {
 		/**
 		 * initialize every distance with infinity, except the start setting to 0
 		 */
@@ -89,7 +98,7 @@ public class Dijkstra {
 		distance[start] = 0;
 	}
 
-	private static int[] getNeighbors(int node) {
+	private int[] getNeighbors(int node) {
 		/**
 		 * return neighbors of node
 		 */
@@ -98,7 +107,7 @@ public class Dijkstra {
 		return Arrays.copyOfRange(Data.target, start, end);
 	}
 	
-	private static List<Integer> reconstructPath(int[] shortestPath, int start, int goal) {
+	private List<Integer> reconstructPath(int[] shortestPath, int start, int goal) {
 		List<Integer> result = new LinkedList<Integer>();
 		int u = goal;
 		while (true) {
