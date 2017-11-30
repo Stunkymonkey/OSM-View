@@ -8,6 +8,10 @@ public class Helper {
 	public static void Print(int[] array) {
 		System.out.println(Arrays.toString(array));
 	}
+	
+	public static void Print(String s, int[] array) {
+		System.out.println(s + ": " + Arrays.toString(array));
+	}
 
 	public static void Print(double[] array) {
 		System.out.println(Arrays.toString(array));

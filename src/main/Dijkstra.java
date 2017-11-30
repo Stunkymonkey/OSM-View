@@ -73,12 +73,10 @@ public class Dijkstra {
 				return reconstructPath(parent, start, goal);
 			}
 			neighbors = getNeighbors(current);
-			// System.out.println("Array: " + Arrays.toString(neighbors));
+			// Helper.Print("Neighbors", neighbors)
 			for (int h = 0; neighbors.length > h; h++) {
 				int i = neighbors[h];
 				int j = Data.OffsetTable[current] + h;
-				// System.out.println("source: " + Data.source[j] + " target: " + Data.target[j]
-				// + " weight: " + Data.weight[j]);
 				if (!visited[i]) {
 					int totalDistance = distance[current] + Data.weight[j];
 					if (totalDistance < distance[i]) {
