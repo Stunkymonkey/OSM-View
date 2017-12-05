@@ -15,11 +15,11 @@ public class Main {
 
 		List<Integer> path;
 		Dijkstra d;
-		d = new Dijkstra(2);
+		d = new Dijkstra(8371830);
 
 		d.findWay(-1);
 		Helper.Time("Dijkstra all");
-		path = d.findWay(1);
+		path = d.findWay(16743651);
 		Helper.Time("Find Way");
 		Helper.Print(path);
 

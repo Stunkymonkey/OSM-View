@@ -49,7 +49,13 @@ public class Dijkstra {
 			return;
 		}
 		this.start = start;
-		initialize(start);
+		this.distance = Arrays.copyOf(Data.dijkstraDistances, Data.dijkstraDistances.length);
+		this.visited = new boolean[Data.AmountNodes];
+		this.unvisited = new PriorityQueue<Tuple>();
+		this.parent = new int[Data.AmountNodes];
+
+		this.unvisited.add(new Tuple(start, 0));
+		this.distance[start] = 0;
 	}
 
 	/**
@@ -62,58 +68,30 @@ public class Dijkstra {
 			System.out.println(("Goal not found"));
 			return new LinkedList<Integer>();
 		} else if (goal != -1 && visited[goal]) {
+			Helper.Print("Distance: " + distance[goal]);
 			return reconstructPath(parent, start, goal);
 		}
 		int current;
-		int[] neighbors;
 		while (!unvisited.isEmpty()) {
 			current = unvisited.remove().getNode();
 			if (current == goal) {
-				System.out.println("Distance: " + distance[goal]);
+				Helper.Print("Distance: " + distance[goal]);
 				return reconstructPath(parent, start, goal);
 			}
-			neighbors = getNeighbors(current);
-			// Helper.Print("Neighbors", neighbors)
-			for (int h = 0; neighbors.length > h; h++) {
-				int i = neighbors[h];
-				int j = Data.OffsetTable[current] + h;
-				if (!visited[i]) {
-					int totalDistance = distance[current] + Data.weight[j];
-					if (totalDistance < distance[i]) {
-						distance[i] = totalDistance;
-						visited[i] = true;
-						parent[i] = current;
-						unvisited.add(new Tuple(i, totalDistance));
+			for (int i = Data.OffsetTable[current]; Data.OffsetTable[current + 1] > i; i++) {
+				int target = Data.target[i];
+				if (!visited[target]) {
+					int totalDistance = distance[current] + Data.weight[i];
+					if (totalDistance < distance[target]) {
+						distance[target] = totalDistance;
+						visited[target] = true;
+						parent[target] = i;
+						unvisited.add(new Tuple(target, totalDistance));
 					}
 				}
 			}
 		}
 		return new LinkedList<Integer>();
-	}
-
-	/**
-	 * initialize every distance with infinity, except the start setting to 0
-	 * @param start
-	 */
-	private void initialize(int start) {
-		distance = Arrays.copyOf(Data.dijkstraDistances, Data.dijkstraDistances.length);
-		visited = new boolean[Data.AmountNodes];
-		unvisited = new PriorityQueue<Tuple>();
-		parent = new int[Data.AmountNodes];
-
-		unvisited.add(new Tuple(start, 0));
-		distance[start] = 0;
-	}
-
-	/**
-	 * get all neighbors of node
-	 * @param node
-	 * @return
-	 */
-	private int[] getNeighbors(int node) {
-		int start = Data.OffsetTable[node];
-		int end = Data.OffsetTable[node + 1];
-		return Arrays.copyOfRange(Data.target, start, end);
 	}
 	
 	/**
@@ -131,7 +109,7 @@ public class Dijkstra {
 			if (u == start) {
 				break;
 			}
-			u = shortestPath[u];
+			u = Data.source[shortestPath[u]];
 		}
 		return result;
 	}
