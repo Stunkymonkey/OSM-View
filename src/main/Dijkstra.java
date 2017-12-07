@@ -74,6 +74,7 @@ public class Dijkstra {
 		int current;
 		while (!unvisited.isEmpty()) {
 			current = unvisited.remove().getNode();
+			visited[current] = true;
 			if (current == goal) {
 				Helper.Print("Distance: " + distance[goal]);
 				return reconstructPath(parent, start, goal);
@@ -84,7 +85,6 @@ public class Dijkstra {
 					int totalDistance = distance[current] + Data.weight[i];
 					if (totalDistance < distance[target]) {
 						distance[target] = totalDistance;
-						visited[target] = true;
 						parent[target] = i;
 						unvisited.add(new Tuple(target, totalDistance));
 					}
