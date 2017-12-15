@@ -2,11 +2,14 @@ package main;
 
 import java.util.ArrayList;
 
+/**
+ * for storing all the data
+ */
 public class Data {
+	// for timing output
 	static long startTime;
 
-	public static Fileread fr;
-
+	// Data from file
 	public static int AmountNodes;
 	public static int AmountEdges;
 	public static int[] source, target, weight;
@@ -17,6 +20,7 @@ public class Data {
 	public static double min_x = Double.MAX_VALUE;
 	public static double min_y = Double.MAX_VALUE;
 
+	// for the grid
 	public static int gridAmount;
 	public static double gridSizeX;
 	public static double gridSizeY;
@@ -25,5 +29,6 @@ public class Data {
 	public static ArrayList<Integer>[] gridX;
 	public static ArrayList<Integer>[] gridY;
 	
+	// distances will get set to infinity
 	public static int[] dijkstraDistances;
 }

@@ -11,6 +11,7 @@ public class Dijkstra {
 	private int[] parent;
 	private PriorityQueue<Tuple> unvisited;
 	private int start;
+	private boolean validStart;
 
 	/**
 	 * this class is needed for PriorityQueue: with comparable we are able to sort
@@ -45,9 +46,10 @@ public class Dijkstra {
 	 */
 	public Dijkstra(int start) {
 		if (start >= Data.AmountNodes || start < 0) {
-			System.out.println(("Start not found"));
+			System.out.println("Start not found");
 			return;
 		}
+		this.validStart = true;
 		this.start = start;
 		this.distance = Arrays.copyOf(Data.dijkstraDistances, Data.dijkstraDistances.length);
 		this.visited = new boolean[Data.AmountNodes];
@@ -64,19 +66,26 @@ public class Dijkstra {
 	 * @return
 	 */
 	public List<Integer> findWay(int goal) {
-		if (goal < -1 || goal >= Data.AmountNodes) {
-			System.out.println(("Goal not found"));
+		// check if goal is in range
+		if (goal >= Data.AmountNodes || goal < -1) {
+			System.out.println("Goal not found");
 			return new LinkedList<Integer>();
-		} else if (goal != -1 && visited[goal]) {
-			Helper.Print("Distance: " + distance[goal]);
+		}
+		// check if start is defined
+		else if (!validStart){
+			System.out.println("Start not defined");
+			return new LinkedList<Integer>();
+		}
+		// check if goal was already visited
+		else if (goal != -1 && visited[goal]) {
 			return reconstructPath(parent, start, goal);
 		}
+		// else do Dijkstra
 		int current;
 		while (!unvisited.isEmpty()) {
 			current = unvisited.remove().getNode();
 			visited[current] = true;
 			if (current == goal) {
-				Helper.Print("Distance: " + distance[goal]);
 				return reconstructPath(parent, start, goal);
 			}
 			for (int i = Data.OffsetTable[current]; Data.OffsetTable[current + 1] > i; i++) {
@@ -103,15 +112,41 @@ public class Dijkstra {
 	 */
 	private List<Integer> reconstructPath(int[] shortestPath, int start, int goal) {
 		List<Integer> result = new LinkedList<Integer>();
-		int u = goal;
-		while (true) {
-			result.add(0, u);
-			if (u == start) {
-				break;
-			}
-			u = Data.source[shortestPath[u]];
+		int node = goal;
+		int edge = Data.source[goal];
+		while (node != start) {
+			edge = shortestPath[node];
+			node = Data.source[edge];
+			result.add(0, edge);
 		}
 		return result;
+	}
+	
+	/**
+	 * convert edges to nodes
+	 * @param edges
+	 * @return
+	 */
+	public static List<Integer> edgesToNodes(List<Integer> edges) {
+		List<Integer> result = new LinkedList<Integer>();
+		result.add(Data.source[edges.get(0)]);
+		for (Integer i : edges) {
+			result.add(Data.target[i]);
+		}
+		return result;
+	}
+	
+	/**
+	 * calculate distance again given the edges
+	 * @param edges
+	 * @return
+	 */
+	public int getDistance(int goal) {
+		if (visited[goal]) {
+			return distance[goal];
+		}
+		System.out.println("Not visited yet");
+		return -1;
 	}
 	
 	/**

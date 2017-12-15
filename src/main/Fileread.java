@@ -10,12 +10,16 @@ public class Fileread {
 	private static String fileName;
 	private static BufferedReader bufferedReader;
 
+	/**
+	 * open file with bufferedReader
+	 * @param fileName
+	 */
 	public Fileread(String fileName) {
 		Fileread.fileName = fileName;
 		try {
 			FileReader fileReader = new FileReader(fileName);
 			bufferedReader = new BufferedReader(fileReader);
-
+			// ignore fmi-comments
 			for (int i = 0; i < 5; i++) {
 				bufferedReader.readLine();
 			}
@@ -29,6 +33,9 @@ public class Fileread {
 		}
 	}
 
+	/**
+	 * @return next line of bufferedReader
+	 */
 	public static String getLine() {
 		String line = null;
 		try {

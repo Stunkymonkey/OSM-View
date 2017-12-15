@@ -3,6 +3,9 @@ package main;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * this is a helper class to better debugging
+ */
 public class Helper {
 	
 	private static boolean DEBUG = true;
@@ -10,6 +13,12 @@ public class Helper {
 	public static void Print(String string) {
 		if (DEBUG) {
 			System.out.println(string);
+		}
+	}
+	
+	public static void Print(String[] array) {
+		if (DEBUG) {
+			System.out.println(Arrays.toString(array));
 		}
 	}
 
@@ -34,6 +43,12 @@ public class Helper {
 	public static void Print(List<Integer> list) {
 		if (DEBUG) {
 			System.out.println(Arrays.toString(list.toArray()));
+		}
+	}
+	
+	public static void Print(String s, List<Integer> list) {
+		if (DEBUG) {
+			System.out.println(s + ": " + Arrays.toString(list.toArray()));
 		}
 	}
 

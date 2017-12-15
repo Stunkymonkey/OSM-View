@@ -2,11 +2,14 @@ package main;
 
 public class NodesAndEdges {
 
+	/**
+	 * fill all arrays with given 
+	 */
 	public static void createArrays() {
 		initArrays();
 		createNodeTable();
 		createEdgeTables();
-		Helper.Time("Read File");
+		//Helper.Time("Read File");
 		createOffsetTable();
 	}
 	
@@ -77,6 +80,7 @@ public class NodesAndEdges {
 			if (current_node < Data.source[i]) {
 				current_node = Data.source[i];
 				if (current_node > 0) {
+					// run backward on the offset-table based to the difference
 					for (int j = 0; j < (Data.source[i] - Data.source[i - 1]); j++) {
 						Data.OffsetTable[current_node - j] = i;
 					}
