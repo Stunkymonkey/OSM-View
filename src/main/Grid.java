@@ -3,7 +3,7 @@ package main;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Geo {
+public class Grid {
 	public static void createGrid() {
 		initGrid();
 		createGeoTables();
@@ -140,57 +140,5 @@ public class Geo {
 		// vielleicht muessen wir hier noch einmal alles aussenrum nehmen und mit
 		// berechnen, da es moeglcherweise doch naeher sein koennte
 		return points;
-	}
-
-	/**
-	 * ich kapier hier nicht wie du ohne for schleifen irgendwie alles abgreifen
-	 * willst. für mich sieht das nachm eindimensionalen einsammeln aus
-	 * 
-	 * @param x
-	 * @param y
-	 * @param r
-	 * @return
-	 */
-	public static int[][] getBounds(double x, double y, int r) {
-		int[] grid = getGridPosition(x, y); // ist das nicht dumm das hier zu machen? dann wird die methode ja bei jedem
-											// rekursiven aufruf aufgerufen? waers nicht besser der methode direkt nen
-											// array von getgridpos zu geben?
-		int[] x_bounds = { grid[0] - r, grid[0] + r };
-		int[] y_bounds = { grid[1] - r, grid[1] + r };
-		System.out.println(r);
-		if (getPointsInBounds(x_bounds[0], x_bounds[1], "x") == null
-				| getPointsInBounds(y_bounds[0], y_bounds[1], "y") == null) {
-			getBounds(x, y, r + 1);
-		}
-		return new int[][] { x_bounds, y_bounds };
-	}
-
-	/**
-	 * ja an sich ganz ok, allerdings die sache mit der dimension find ich nicht so
-	 * geil, auch wenn die Idee wahrscheinlich von mir kam.
-	 * 
-	 * @param low
-	 * @param up
-	 * @param dim
-	 * @return
-	 */
-	private static LinkedList<Integer> getPointsInBounds(int low, int up, String dim) {
-		LinkedList<Integer> pointsInBounds = new LinkedList<>();
-		switch (dim) {
-		case "x":
-			for (int i = low; i <= up; i++) {
-				pointsInBounds.addAll(Data.gridX[i]);
-			}
-			break;
-		case "y":
-			for (int i = low; i <= up; i++) {
-				pointsInBounds.addAll(Data.gridY[i]);
-			}
-			break;
-		default:
-			System.out.println("No proper dimension");
-		}
-
-		return pointsInBounds;
 	}
 }

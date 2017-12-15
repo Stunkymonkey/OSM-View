@@ -45,7 +45,7 @@ public class Main {
 		new Fileread(filename);
 		NodesAndEdges.createArrays();
 		//Helper.Time("Offset-Array");
-		//Geo.createGrid();
+		//Grid.createGrid();
 		//Helper.Time("Create-Grid");
 		Dijkstra.initDistanceTable();
 		//Helper.Time("Initialize Dijkstra-Tables");
