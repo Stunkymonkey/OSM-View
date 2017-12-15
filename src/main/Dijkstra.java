@@ -104,7 +104,7 @@ public class Dijkstra {
 	}
 	
 	/**
-	 * reconstruct the shortest path 
+	 * reconstruct the edges of the shortest path 
 	 * @param shortestPath
 	 * @param start
 	 * @param goal
@@ -137,7 +137,7 @@ public class Dijkstra {
 	}
 	
 	/**
-	 * calculate distance again given the edges
+	 * get distance if goal was visited
 	 * @param edges
 	 * @return
 	 */
