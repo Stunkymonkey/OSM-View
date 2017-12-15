@@ -14,17 +14,23 @@ public class Main {
 		List<Integer> nodes;
 		Dijkstra d;
 		
+		/*
+		 * ENTER BELOW HERE FOR 
+		 */
+		int start = 8371830;
+		int goal = 16743651;
+		
 		// initialize and set start point
-		d = new Dijkstra(8371830);
+		d = new Dijkstra(start);
 
 		// set goal to -1 if Dijkstra should run without goal
 		d.findWay(-1);
 		Helper.Time("Dijkstra running on full graph");
 
-		edges = d.findWay(16743651);
-		Helper.Time("Find Way to node");
+		edges = d.findWay(goal);
+		Helper.Time("Find Way to goal");
 
-		Helper.Print("Distance: " + d.getDistance(16743651));
+		Helper.Print("Distance: " + d.getDistance(goal));
 		Helper.Print("Edges", edges);
 		nodes = Dijkstra.edgesToNodes(edges);
 		Helper.Print("Nodes", nodes);
@@ -45,6 +51,9 @@ public class Main {
 		//Helper.Time("Initialize Dijkstra-Tables");
 	}
 	
+	/**
+	 * return the filename we are using
+	 */
 	public static String getFilename(String[] args) {
 		String filename;
 		if (args.length == 0) {
