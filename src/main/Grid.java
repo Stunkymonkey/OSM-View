@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Grid {
+	/**
+	 * prepare grid
+	 */
 	public static void createGrid() {
 		initGrid();
 		createGeoTables();
 	}
 
 	/**
-	 * 
+	 * initialize all arrays
 	 */
 	@SuppressWarnings("unchecked")
 	private static void initGrid() {
@@ -28,7 +31,7 @@ public class Grid {
 	}
 
 	/**
-	 * 
+	 * calculates position of node in grid
 	 * @param x
 	 * @param y
 	 * @return
@@ -47,7 +50,7 @@ public class Grid {
 	}
 
 	/**
-	 * 
+	 * add all nodes to grid
 	 */
 	private static void createGeoTables() {
 		int[] tmp = new int[2];
@@ -65,7 +68,7 @@ public class Grid {
 	}
 
 	/**
-	 * 
+	 * calculates distance of two points
 	 * @param x1
 	 * @param y1
 	 * @param x2
@@ -77,7 +80,7 @@ public class Grid {
 	}
 
 	/**
-	 * 
+	 * returns integer, that are in both lists
 	 * @param x_index
 	 * @param y_index
 	 * @return
@@ -88,7 +91,7 @@ public class Grid {
 	}
 
 	/**
-	 * 
+	 * get nearest node to coordinates
 	 * @param x
 	 * @param y
 	 * @return
@@ -110,8 +113,7 @@ public class Grid {
 	}
 
 	/**
-	 * test this it might have a off by one error
-	 * 
+	 * return points near to grid position
 	 * @param x
 	 * @param y
 	 * @param range
@@ -137,8 +139,7 @@ public class Grid {
 			points = calcIntersection(points_x, points_y);
 			range += 2;
 		}
-		// vielleicht muessen wir hier noch einmal alles aussenrum nehmen und mit
-		// berechnen, da es moeglcherweise doch naeher sein koennte
+		// maybe we should add more grids around them
 		return points;
 	}
 }
