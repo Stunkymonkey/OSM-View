@@ -27,9 +27,11 @@ public class Fileread {
 			Data.AmountEdges = Integer.parseInt(bufferedReader.readLine());
 		} catch (FileNotFoundException ex) {
 			System.out.println("Unable to open file '" + fileName + "'");
+			System.exit(1);
 		} catch (IOException e) {
 			System.out.println("Error reading file '" + fileName + "'");
 			e.printStackTrace();
+			System.exit(2);
 		}
 	}
 
@@ -48,6 +50,7 @@ public class Fileread {
 		} catch (IOException e) {
 			System.out.println("Error reading file '" + fileName + "'");
 			e.printStackTrace();
+			System.exit(3);
 		}
 		return null;
 	}
