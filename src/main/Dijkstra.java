@@ -128,6 +128,9 @@ public class Dijkstra {
 	 * @return
 	 */
 	public static List<Integer> edgesToNodes(List<Integer> edges) {
+		if (edges.size() == 0) {
+			return new LinkedList<Integer>();
+		}
 		List<Integer> result = new LinkedList<Integer>();
 		result.add(Data.source[edges.get(0)]);
 		for (Integer i : edges) {
@@ -146,7 +149,7 @@ public class Dijkstra {
 			return distance[goal];
 		}
 		System.out.println("Not visited yet");
-		return -1;
+		return Integer.MAX_VALUE;
 	}
 	
 	/**
