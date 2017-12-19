@@ -142,7 +142,7 @@ public class Dijkstra {
 	 * @return
 	 */
 	public int getDistance(int goal) {
-		if (visited[goal]) {
+		if (goal <= Data.AmountNodes && goal >= 0 && visited[goal]) {
 			return distance[goal];
 		}
 		System.out.println("Not visited yet");
