@@ -25,9 +25,9 @@ public class Main {
 		d = new Dijkstra(start);
 		Scanner user_input = new Scanner( System.in );
 		while (true) {
-			System.out.println("Set start: ");
+			System.out.print("Set start: ");
 			start = user_input.nextInt();
-			System.out.println("Set goal (-1 for whole graph): ");
+			System.out.print("Set goal (-1 for whole graph): ");
 			goal = user_input.nextInt();
 			Helper.Time("time for input");
 			if (!d.setStart(start)) {
@@ -42,7 +42,7 @@ public class Main {
 				Helper.Print("Nodes", nodes);
 				Helper.Time("calculated path");
 			}
-			System.out.println("quit? [y/n]");
+			System.out.print("quit? [y/n]");
 			if (user_input.next().toLowerCase().equals("y")) {
 				break;
 			}
