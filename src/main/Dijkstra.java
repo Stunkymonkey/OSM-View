@@ -153,6 +153,32 @@ public class Dijkstra {
 	}
 	
 	/**
+	 * set new start point
+	 * @param start
+	 * @return
+	 */
+	public boolean setStart(int start) {
+		if (this.start == start) {
+			return true;
+		}
+		this.validStart = false;
+		if (start >= Data.AmountNodes || start < 0) {
+			System.out.println("Start not found");
+			return false;
+		}
+		this.validStart = true;
+		this.start = start;
+		this.distance = Arrays.copyOf(Data.dijkstraDistances, Data.dijkstraDistances.length);
+		this.visited = new boolean[Data.AmountNodes];
+		this.unvisited.clear();
+		this.parent = new int[Data.AmountNodes];
+
+		this.unvisited.add(new Tuple(start, 0));
+		this.distance[start] = 0;
+		return true;
+	}
+	
+	/**
 	 * set all distances to "infinity"
 	 */
 	public static void initDistanceTable() {
