@@ -1,6 +1,7 @@
 package main;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -17,23 +18,36 @@ public class Main {
 		/*
 		 * ENTER BELOW HERE FOR 
 		 */
-		int start = 8371830;
-		int goal = 16743651;
+		int start = 0;
+		int goal = -1;
 		
 		// initialize and set start point
 		d = new Dijkstra(start);
-
-		// set goal to -1 if Dijkstra should run without goal
-		d.findWay(-1);
-		Helper.Time("Dijkstra running on full graph");
-
-		edges = d.findWay(goal);
-		Helper.Time("Find Way to goal");
-
-		Helper.Print("Distance: " + d.getDistance(goal));
-		Helper.Print("Edges", edges);
-		nodes = Dijkstra.edgesToNodes(edges);
-		Helper.Print("Nodes", nodes);
+		Scanner user_input = new Scanner( System.in );
+		while (true) {
+			System.out.println("Set start: ");
+			start = user_input.nextInt();
+			System.out.println("Set goal (-1 for whole graph): ");
+			goal = user_input.nextInt();
+			Helper.Time("time for input");
+			if (!d.setStart(start)) {
+				continue;
+			}
+			edges = d.findWay(goal);
+			Helper.Time("executed dijkstra");
+			if (goal != -1) {
+				Helper.Print("Distance: " + d.getDistance(goal));
+				Helper.Print("Edges", edges);
+				nodes = Dijkstra.edgesToNodes(edges);
+				Helper.Print("Nodes", nodes);
+				Helper.Time("calculated path");
+			}
+			System.out.println("quit? [y/n]");
+			if (user_input.next().toLowerCase().equals("y")) {
+				break;
+			}
+		}
+		user_input.close();
 	}
 
 	/**
