@@ -25,8 +25,11 @@ public class Main {
 		d = new Dijkstra(start);
 		Scanner user_input = new Scanner( System.in );
 		while (true) {
-			System.out.print("Set start: ");
+			System.out.print("Set start (-1 for exiting): ");
 			start = user_input.nextInt();
+			if (start == -1) {
+				break;
+			}
 			System.out.print("Set goal (-1 for whole graph): ");
 			goal = user_input.nextInt();
 			Helper.Time("time for input");
@@ -41,10 +44,6 @@ public class Main {
 				nodes = Dijkstra.edgesToNodes(edges);
 				Helper.Print("Nodes", nodes);
 				Helper.Time("calculated path");
-			}
-			System.out.print("quit? [y/n]");
-			if (user_input.next().toLowerCase().equals("y")) {
-				break;
 			}
 		}
 		user_input.close();
