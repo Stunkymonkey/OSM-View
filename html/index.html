@@ -39,13 +39,38 @@
     var popup = L.popup();
 
     function onMapClick(e) {
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(map);
+        var lat = e.latlng.lat;
+        var lon = e.latlng.lng;
+        var geojsonFeature = {
+            "type": "Feature",
+            "properties": {
+                "name": "start",
+                "popupContent": "Lat: " + lat + " Lon: " + lon
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [lon,lat]
+            }
+        };
+
+        L.geoJSON(geojsonFeature, {onEachFeature: onEachFeature}).addTo(map)
+        //popup
+            //.setLatLng(e.latlng)
+            //.setContent("You clicked the map at " + "lat: "+ a + " and lon: " + b)
+            //.openOn(map);
     }
 
     map.on('click', onMapClick);
+
+
+
+
+    function onEachFeature(feature, layer) {
+        // does this feature have a property named popupContent?
+        if (feature.properties && feature.properties.popupContent) {
+            layer.bindPopup(feature.properties.popupContent);
+        }
+    }
 
 </script>
 </body>
