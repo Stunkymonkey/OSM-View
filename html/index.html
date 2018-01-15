@@ -41,15 +41,18 @@
     var popup = L.popup();
 
     var lat, lat_goal, lat_start, lon, lon_start, lon_goal;
-
+    var id = 0;
+    var geojsonFeature;
     function onMapClick(e) {
         lat = e.latlng.lat;
         lon = e.latlng.lng;
-        var geojsonFeature = {
+        id += 1;
+        geojsonFeature = {
             "type": "Feature",
+            "id": id,
             "properties": {
                 "name": "start",
-                "popupContent": "Lat: " + lat.toFixed(3) + " Lon: " + lon.toFixed(3) + "<br>",
+                "popupContent": "id: " + id + "Lat: " + lat.toFixed(3) + " Lon: " + lon.toFixed(3) + "<br>",
                 "start": "<button onclick=start()>start</button>",
                 "goal": "<button onclick=goal()>goal</button>",
                 "lat": lat,
@@ -60,6 +63,7 @@
                 "coordinates": [lon, lat]
             }
         };
+
         L.geoJSON(geojsonFeature, {onEachFeature: onEachFeature}).addTo(map)
     }
 
@@ -68,6 +72,7 @@
     function start() {
         lat_start = lat;
         lon_start = lon;
+
         info.update();
     }
 
