@@ -14,6 +14,8 @@
 </head>
 <body>
 <div id="map"></div>
+
+
 <script>
 
     var bounds = [
@@ -38,15 +40,72 @@
 
     var popup = L.popup();
 
+    var lat, lat_goal, lat_start, lon, lon_start, lon_goal;
+    var id = 0;
+    var geojsonFeature;
     function onMapClick(e) {
-        popup
-            .setLatLng(e.latlng)
-            .setContent("You clicked the map at " + e.latlng.toString())
-            .openOn(map);
+        lat = e.latlng.lat;
+        lon = e.latlng.lng;
+        id += 1;
+        geojsonFeature = {
+            "type": "Feature",
+            "id": id,
+            "properties": {
+                "name": "start",
+                "popupContent": "id: " + id + "Lat: " + lat.toFixed(3) + " Lon: " + lon.toFixed(3) + "<br>",
+                "start": "<button onclick=start()>start</button>",
+                "goal": "<button onclick=goal()>goal</button>",
+                "lat": lat,
+                "lon": lon
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [lon, lat]
+            }
+        };
+
+        L.geoJSON(geojsonFeature, {onEachFeature: onEachFeature}).addTo(map)
+    }
+
+    //sets Start and Goal
+    //Fehler: brauche lat und lon vom geojson objekt mit dem das popup geöffnet wird
+    function start() {
+        lat_start = lat;
+        lon_start = lon;
+
+        info.update();
+    }
+
+    function goal() {
+        lat_goal = lat;
+        lon_goal = lon;
+        info.update();
     }
 
     map.on('click', onMapClick);
 
+    //Infobox oben rechts
+    var info = L.control();
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
+
+    // method that we will use to update the control based on feature properties passed
+    info.update = function (props) {
+        this._div.innerHTML = '<h4>Your start and goal</h4>' + '<br> Start: ' + lat_start + ', '  + lon_start + '<br> Goal: ' + lat_goal + ', '  + lon_goal;
+    };
+
+    info.addTo(map);
+
+    function onEachFeature(feature, layer) {
+        // does this feature have a property named popupContent?
+        layer.on({
+            click: layer.bindPopup(feature.properties.popupContent +  feature.properties.start + feature.properties.goal)
+        });
+    }
 </script>
 </body>
 </html>
