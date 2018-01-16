@@ -16,18 +16,12 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     maxBounds: bounds, // Sets bounds as max
     maxBoundsViscosity: 1.0
 }).addTo(map);
-
-var popup = L.popup();
+map.doubleClickZoom.disable();
 var goal_count = 0;
 var start_count = 0;
-var lat, lat_goal, lat_start, lon, lon_start, lon_goal;
+var lat, lat_goal, lat_start, lon, lon_start, lon_goal, lat_start_short, lat_goal_short, lon_start_short, lon_goal_short;
 var geojsonFeature;
 var thename;
-var blueMarker = {
-    radius: 8,
-    fillColor: "#0000ff"
-};
-
 var redMarker = {
     radius: 8,
     fillColor: "#ff0000"
@@ -39,7 +33,6 @@ var greenMarker = {
 var myMarker;
 var layerlist = {};
 function onMapClick(e) {
-    console.log("hello");
     lat = e.latlng.lat;
     lon = e.latlng.lng;
     geojsonFeature = {
@@ -75,9 +68,6 @@ function onMapClick(e) {
     }
 }
 
-
-//sets Start and Goal
-//Fehler: brauche lat und lon vom geojson objekt mit dem das popup geöffnet wird
 function enableAddMarker() {
     map.on('click', onMapClick);
 }
@@ -85,13 +75,16 @@ function enableAddMarker() {
 function start() {
     lat_start = lat;
     lon_start = lon;
+    lat_start_short = lat.toFixed(3);
+    lon_start_short= lon.toFixed(3);
     info.update();
-
 }
 
 function goal() {
     lat_goal = lat;
     lon_goal = lon;
+    lat_goal_short = lat.toFixed(3);
+    lon_goal_short= lon.toFixed(3);
     info.update();
 }
 function fire_start() {
@@ -113,18 +106,23 @@ function fire_goal() {
     goal_count=1;
     enableAddMarker();
 }
-
 //Infobox oben rechts
 var info = L.control();
 
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    L.DomEvent.disableClickPropagation(this._div);
     this.update();
     return this._div;
 };
+info.onRemove = function (map) {
+    //L.DomEvent.off();
+}
 
 info.update = function (props) {
-    this._div.innerHTML = '<h4>Your start and goal</h4>' + '<br><button onclick=fire_start()>start</button> ' + lat_start + ', ' + lon_start + '<br> <button onclick=fire_goal()>goal</button>: ' + lat_goal + ', ' + lon_goal;
+    this._div.innerHTML = ' <h4>Your start and goal</h4>' +
+        '<br><button onclick="fire_start()" ">start</button> ' + lat_start_short + ', '
+        + lon_start_short + '<br> <button onclick=fire_goal()>goal</button> ' + lat_goal_short + ', ' + lon_goal_short;
 };
 
 info.addTo(map);
