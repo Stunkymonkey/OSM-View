@@ -61,6 +61,7 @@ function createGeo(lat, lon) {
         }
     }).addTo(map);
 }
+
 function onButtonClick(e) {
     lat = e.latlng.lat;
     lon = e.latlng.lng;
@@ -78,8 +79,8 @@ function onMapClick(e){
     lon = e.latlng.lng;
     var popup = L.popup()
         .setLatLng(e.latlng)
-        .setContent("Lat: " +  e.latlng.lat.toFixed(3) + ", Long: " + e.latlng.lng.toFixed(3) + '<br><button onclick="setStart(lat,lon)" ">Set start</button> '
-            + '<button onclick="setGoal(lat,lon)" ">Set Goal</button> ')
+        .setContent("Lat: " +  e.latlng.lat.toFixed(3) + ", Long: " + e.latlng.lng.toFixed(3) + '<br><button class="btn1" onclick="setStart(lat,lon)" ">Set start</button> '
+            + '<button class="btn2" onclick="setGoal(lat,lon)" ">Set Goal</button> ')
         .openOn(map);
 }
 
@@ -156,8 +157,8 @@ info.onRemove = function (map) {
 
 info.update = function (props) {
     this._div.innerHTML = ' <h4>Your start and goal</h4>' +
-        '<br><button onclick="fire_start()" ">start</button> ' + lat_start_short + ', '
-        + lon_start_short + '<br> <button onclick=fire_goal()>goal</button> ' + lat_goal_short + ', ' + lon_goal_short;
+        '<br><button class="btn1" onclick="fire_start()" ">start</button> ' + lat_start_short + ', '
+        + lon_start_short + '<br> <button class="btn2" onclick=fire_goal()>goal</button> ' + lat_goal_short + ', ' + lon_goal_short;
 };
 
 info.addTo(map);
