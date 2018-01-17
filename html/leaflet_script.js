@@ -17,6 +17,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     maxBoundsViscosity: 1.0
 }).addTo(map);
 map.doubleClickZoom.disable();
+var popup = L.popup();
 var goal_count = 0;
 var start_count = 0;
 var lat, lat_goal, lat_start, lon, lon_start, lon_goal, lat_start_short, lat_goal_short, lon_start_short, lon_goal_short;
@@ -32,9 +33,8 @@ var greenMarker = {
 };
 var myMarker;
 var layerlist = {};
-function onMapClick(e) {
-    lat = e.latlng.lat;
-    lon = e.latlng.lng;
+map.on('click', onMapClick);
+function createGeo(lat, lon) {
     geojsonFeature = {
         "type": "Feature",
         "properties": {
@@ -54,24 +54,59 @@ function onMapClick(e) {
             return L.circleMarker(latlng, myMarker);
         },
         onEachFeature: function(feature, layer) {
-        layerlist[feature.properties.name]=layer;
+            layerlist[feature.properties.name]=layer;
             if (feature.properties && feature.properties.popupContent) {
                 layer.bindPopup(feature.properties.popupContent);
             }
-    }
+        }
     }).addTo(map);
-    map.off('click', onMapClick);
+}
+function onButtonClick(e) {
+    lat = e.latlng.lat;
+    lon = e.latlng.lng;
+    createGeo(lat,lon);
+    map.off('click', onButtonClick);
+    map.on('click', onMapClick);
     if (thename == "start") {
         start();
     } else {
         goal();
     }
 }
-
-function enableAddMarker() {
-    map.on('click', onMapClick);
+function onMapClick(e){
+    lat = e.latlng.lat;
+    lon = e.latlng.lng;
+    var popup = L.popup()
+        .setLatLng(e.latlng)
+        .setContent("Lat: " +  e.latlng.lat.toFixed(3) + ", Long: " + e.latlng.lng.toFixed(3) + '<br><button onclick="setStart(lat,lon)" ">Set start</button> '
+            + '<button onclick="setGoal(lat,lon)" ">Set Goal</button> ')
+        .openOn(map);
 }
 
+function enableAddMarker() {
+    map.off('click', onMapClick);
+    map.on('click', onButtonClick);
+}
+function setStart(lat,lon) {
+    if (thename != undefined && start_count != 0) {
+        map.removeLayer(layerlist["start"]);
+    }
+    start_count = 1;
+    thename = "start";
+    myMarker = redMarker;
+    createGeo(lat,lon);
+    start();
+}
+function setGoal(lat,lon) {
+    if (thename != undefined && goal_count != 0) {
+        map.removeLayer(layerlist["goal"]);
+    }
+    thename = "goal";
+    myMarker = greenMarker;
+    goal_count=1;
+    createGeo(lat,lon);
+    goal();
+}
 function start() {
     lat_start = lat;
     lon_start = lon;
