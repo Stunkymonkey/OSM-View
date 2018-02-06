@@ -83,6 +83,7 @@ function onMapClick(e){
 }
 
 
+
 function setStart(lat,lon) {
     if (thename != undefined && start_count != false) {
         map.removeLayer(layerlist["start"]);
@@ -93,6 +94,7 @@ function setStart(lat,lon) {
     start_count = true;
     thename = "start";
     myIcon = redIcon;
+    map.closePopup();
     createGeo(lat,lon);
     start(lat,lon);
 }
@@ -106,6 +108,7 @@ function setGoal(lat,lon) {
     thename = "goal";
     myIcon = greenIcon;
     goal_count=true;
+    map.closePopup();
     createGeo(lat,lon);
     goal(lat,lon);
 }
