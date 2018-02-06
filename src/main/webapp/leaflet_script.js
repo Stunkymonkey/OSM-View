@@ -20,6 +20,7 @@ map.doubleClickZoom.disable();
 var popup = L.popup();
 var goal_count = false;
 var start_count = false;
+var route_count = false;
 var lat, lat_goal, lat_start, lon, lon_start, lon_goal, lat_start_short, lat_goal_short, lon_start_short, lon_goal_short;
 var geojsonFeature;
 var thename;
@@ -86,6 +87,9 @@ function setStart(lat,lon) {
     if (thename != undefined && start_count != false) {
         map.removeLayer(layerlist["start"]);
     }
+    if (route_count) {
+        map.removeLayer(layerlist["line"]);
+    }
     start_count = true;
     thename = "start";
     myIcon = redIcon;
@@ -95,6 +99,9 @@ function setStart(lat,lon) {
 function setGoal(lat,lon) {
     if (thename != undefined && goal_count != false) {
         map.removeLayer(layerlist["goal"]);
+    }
+    if (route_count) {
+        map.removeLayer(layerlist["line"]);
     }
     thename = "goal";
     myIcon = greenIcon;
@@ -118,20 +125,38 @@ function goal(lat,lon) {
     info.update();
 }
 function swapStartGoal() {
-    var lat_tmp = lat_goal;
-    var lon_tmp = lon_goal;
-    setGoal(lat_start,lon_start);
-    setStart(lat_tmp,lon_tmp);
-
+    if (goal_count && start_count) {
+        var lat_tmp = lat_goal;
+        var lon_tmp = lon_goal;
+        setGoal(lat_start,lon_start);
+        setStart(lat_tmp,lon_tmp);
+    }
 }
 
-var test;
 function drawRoute() {
+    if (route_count) {
+        map.removeLayer(layerlist["line"]);
+    }
+    route_count = true;
     var myLines = [{
         "type": "LineString",
+        "properties": {
+            "name": "line"
+        },
         "coordinates": [[lon_start, lat_start],[10.6,52.5], [lon_goal,lat_goal]]
+
     }];
-    L.geoJSON(myLines).addTo(map);
+    L.geoJson(myLines, {
+        pointToLayer: function (feature, latlng) {
+            return L.marker(latlng, {icon: myIcon});
+        },
+        onEachFeature: function(feature, layer) {
+            layerlist[feature.properties.name]=layer;
+            if (feature.properties && feature.properties.popupContent) {
+                layer.bindPopup(feature.properties.popupContent);
+            }
+        }
+    }).addTo(map);
 }
 //Infobox oben rechts
 var info = L.control();
