@@ -18,19 +18,28 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
 }).addTo(map);
 map.doubleClickZoom.disable();
 var popup = L.popup();
-var goal_count = 0;
-var start_count = 0;
+var goal_count = false;
+var start_count = false;
 var lat, lat_goal, lat_start, lon, lon_start, lon_goal, lat_start_short, lat_goal_short, lon_start_short, lon_goal_short;
 var geojsonFeature;
 var thename;
-var redMarker = {
-    radius: 8,
-    fillColor: "#ff0000"
-};
-var greenMarker = {
-    radius: 8,
-    fillColor: "#00ff00"
-};
+
+var greenIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
+var redIcon = new L.Icon({
+    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+});
 var myMarker;
 var layerlist = {};
 map.on('click', onMapClick);
@@ -51,7 +60,7 @@ function createGeo(lat, lon) {
     };
     L.geoJson(geojsonFeature, {
         pointToLayer: function (feature, latlng) {
-            return L.circleMarker(latlng, myMarker);
+            return L.marker(latlng, {icon: myIcon});
         },
         onEachFeature: function(feature, layer) {
             layerlist[feature.properties.name]=layer;
@@ -62,18 +71,6 @@ function createGeo(lat, lon) {
     }).addTo(map);
 }
 
-function onButtonClick(e) {
-    lat = e.latlng.lat;
-    lon = e.latlng.lng;
-    createGeo(lat,lon);
-    map.off('click', onButtonClick);
-    map.on('click', onMapClick);
-    if (thename == "start") {
-        start();
-    } else {
-        goal();
-    }
-}
 function onMapClick(e){
     lat = e.latlng.lat;
     lon = e.latlng.lng;
@@ -84,31 +81,28 @@ function onMapClick(e){
         .openOn(map);
 }
 
-function enableAddMarker() {
-    map.off('click', onMapClick);
-    map.on('click', onButtonClick);
-}
+
 function setStart(lat,lon) {
-    if (thename != undefined && start_count != 0) {
+    if (thename != undefined && start_count != false) {
         map.removeLayer(layerlist["start"]);
     }
-    start_count = 1;
+    start_count = true;
     thename = "start";
-    myMarker = redMarker;
+    myIcon = redIcon;
     createGeo(lat,lon);
-    start();
+    start(lat,lon);
 }
 function setGoal(lat,lon) {
-    if (thename != undefined && goal_count != 0) {
+    if (thename != undefined && goal_count != false) {
         map.removeLayer(layerlist["goal"]);
     }
     thename = "goal";
-    myMarker = greenMarker;
-    goal_count=1;
+    myIcon = greenIcon;
+    goal_count=true;
     createGeo(lat,lon);
-    goal();
+    goal(lat,lon);
 }
-function start() {
+function start(lat,lon) {
     lat_start = lat;
     lon_start = lon;
     lat_start_short = lat.toFixed(3);
@@ -116,31 +110,28 @@ function start() {
     info.update();
 }
 
-function goal() {
+function goal(lat,lon) {
     lat_goal = lat;
     lon_goal = lon;
     lat_goal_short = lat.toFixed(3);
     lon_goal_short= lon.toFixed(3);
     info.update();
 }
-function fire_start() {
-    if (thename != undefined && start_count != 0) {
-        map.removeLayer(layerlist["start"]);
-    }
-    start_count = 1;
-    thename = "start";
-    myMarker = redMarker;
-    enableAddMarker();
+function swapStartGoal() {
+    var lat_tmp = lat_goal;
+    var lon_tmp = lon_goal;
+    setGoal(lat_start,lon_start);
+    setStart(lat_tmp,lon_tmp);
 
 }
-function fire_goal() {
-    if (thename != undefined && goal_count != 0) {
-        map.removeLayer(layerlist["goal"]);
-    }
-    thename = "goal";
-    myMarker = greenMarker;
-    goal_count=1;
-    enableAddMarker();
+
+var test;
+function drawRoute() {
+    var myLines = [{
+        "type": "LineString",
+        "coordinates": [[lon_start, lat_start],[10.6,52.5], [lon_goal,lat_goal]]
+    }];
+    L.geoJSON(myLines).addTo(map);
 }
 //Infobox oben rechts
 var info = L.control();
@@ -157,8 +148,10 @@ info.onRemove = function (map) {
 
 info.update = function (props) {
     this._div.innerHTML = ' <h4>Your start and goal</h4>' +
-        '<br><button class="btn1" onclick="fire_start()" ">start</button> ' + lat_start_short + ', '
-        + lon_start_short + '<br> <button class="btn2" onclick=fire_goal()>goal</button> ' + lat_goal_short + ', ' + lon_goal_short;
+        '<br> <div class="start">Start: </div> ' + lat_start_short + ', '
+        + lon_start_short + ' <br> <div class="goal"> Goal:  </div>'+ lat_goal_short + ', ' + lon_goal_short
+        + '<br> <button class="btn3"onclick="swapStartGoal()">Swap Start and Goal</button>'
+        + '<br> <button class="btn3"onclick="drawRoute()">draw</button>';
 };
 
 info.addTo(map);

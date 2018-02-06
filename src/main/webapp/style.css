@@ -21,6 +21,18 @@ body {
     margin: 0 0 5px;
     color: #777;
 }
+.start {
+    background: #b00e0e;
+    color: #f0f0f0;
+    font-size: 13px;
+    display: inline;
+}
+.goal {
+    background: #17991b;
+    color: #f0f0f0;
+    font-size: 13px;
+    display: inline;
+}
 .btn1 {
     -webkit-border-radius: 2;
     -moz-border-radius: 2;
@@ -55,5 +67,21 @@ body {
 .btn2:hover {
     opacity: 0.9;
     background: #148516;
+    text-decoration: none;
+}
+.btn3 {
+    border-radius: 2px;
+    opacity: 0.9;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 13px;
+    background: #160099;
+    padding: 7px 15px 7px 15px;
+    text-decoration: none;
+}
+
+.btn3:hover {
+    opacity: 0.9;
+    background: #204b85;
     text-decoration: none;
 }
