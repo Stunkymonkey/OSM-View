@@ -41,7 +41,6 @@ var redIcon = new L.Icon({
     popupAnchor: [1, -34],
     shadowSize: [41, 41]
 });
-var myMarker;
 var layerlist = {};
 map.on('click', onMapClick);
 function createGeo(lat, lon) {
@@ -82,8 +81,6 @@ function onMapClick(e){
         .openOn(map);
 }
 
-
-
 function setStart(lat,lon) {
     if (thename != undefined && start_count != false) {
         map.removeLayer(layerlist["start"]);
@@ -112,6 +109,7 @@ function setGoal(lat,lon) {
     createGeo(lat,lon);
     goal(lat,lon);
 }
+
 function start(lat,lon) {
     lat_start = lat;
     lon_start = lon;
@@ -119,7 +117,6 @@ function start(lat,lon) {
     lon_start_short= lon.toFixed(3);
     info.update();
 }
-
 function goal(lat,lon) {
     lat_goal = lat;
     lon_goal = lon;
@@ -127,6 +124,7 @@ function goal(lat,lon) {
     lon_goal_short= lon.toFixed(3);
     info.update();
 }
+
 function swapStartGoal() {
     if (goal_count && start_count) {
         var lat_tmp = lat_goal;
@@ -140,46 +138,44 @@ function drawRoute() {
     if (route_count) {
         map.removeLayer(layerlist["line"]);
     }
-    route_count = true;
-    var myLines = [{
-        "type": "LineString",
-        "properties": {
-            "name": "line"
-        },
-        "coordinates": [[lon_start, lat_start],[10.6,52.5], [lon_goal,lat_goal]]
 
-    }];
-    L.geoJson(myLines, {
-        pointToLayer: function (feature, latlng) {
-            return L.marker(latlng, {icon: myIcon});
-        },
-        onEachFeature: function(feature, layer) {
-            layerlist[feature.properties.name]=layer;
-            if (feature.properties && feature.properties.popupContent) {
-                layer.bindPopup(feature.properties.popupContent);
+    if (goal_count && start_count) {
+        route_count = true;
+        var myLines = [{
+            "type": "LineString",
+            "properties": {
+                "name": "line"
+            },
+            "coordinates": [[lon_start, lat_start], [lon_goal,lat_goal]]
+
+        }];
+        L.geoJson(myLines, {
+            pointToLayer: function (feature, latlng) {
+                return L.marker(latlng, {icon: myIcon});
+            },
+            onEachFeature: function(feature, layer) {
+                layerlist[feature.properties.name]=layer;
+                if (feature.properties && feature.properties.popupContent) {
+                    layer.bindPopup(feature.properties.popupContent);
+                }
             }
-        }
-    }).addTo(map);
-}
-//Infobox oben rechts
-var info = L.control();
+        }).addTo(map);
+    }
 
+}
+
+var info = L.control();
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
     L.DomEvent.disableClickPropagation(this._div);
     this.update();
     return this._div;
 };
-info.onRemove = function (map) {
-    //L.DomEvent.off();
-}
-
 info.update = function (props) {
     this._div.innerHTML = ' <h4>Your start and goal</h4>' +
         '<br> <div class="start">Start: </div> ' + lat_start_short + ', '
         + lon_start_short + ' <br> <div class="goal"> Goal:  </div>'+ lat_goal_short + ', ' + lon_goal_short
         + '<br> <button class="btn3"onclick="swapStartGoal()">Swap Start and Goal</button>'
-        + ' <button class="btn3"onclick="drawRoute()">draw Route</button>';
+        + ' <button class="btn3"onclick="drawRoute()">draw Route (beta)</button>';
 };
-
 info.addTo(map);

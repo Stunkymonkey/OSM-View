@@ -15,27 +15,25 @@ body {
     background: rgba(255,255,255,0.9);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
-    width: 260px;
+    width: 16vw;
 }
 .info h4 {
     margin: 0 0 5px;
     color: #777;
 }
 .start {
-    background: #b00e0e;
-    color: #f0f0f0;
+    color: #b00e0e;
     font-size: 13px;
     display: inline;
 }
 .goal {
-    background: #17991b;
-    color: #f0f0f0;
+    color: #17991b;
     font-size: 13px;
     display: inline;
 }
 .btn1 {
     background-color:#db3333;
-    border-radius:15px;
+    border-radius:2px;
     border:1px solid #704a4a;
     display:inline-block;
     cursor:pointer;
@@ -44,7 +42,6 @@ body {
     font-size:12px;
     padding:10px 20px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #8f1e1e;
 }
 .btn1:hover {
     background-color:#a81b1b;
@@ -54,9 +51,9 @@ body {
     top:1px;
 }
 .btn2 {
-    background-color:#44c767;
-    border-radius:15px;
-    border:1px solid #18ab29;
+    background-color:#339967;
+    border-radius:2px;
+    border:1px solid #002200;
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
@@ -64,30 +61,28 @@ body {
     font-size:12px;
     padding:10px 20px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #2f6627;
 }
 .btn2:hover {
-    background-color:#5cbf2a;
+    background-color:#44aa78;
 }
 .btn2:active {
     position:relative;
     top:1px;
 }
 .btn3 {
-    background-color:#1122db;
-    border-radius:15px;
-    border:1px solid #2520bd;
+    background-color:#aaaaaa;
+    border-radius:2px;
+    border:1px solid #111111;
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
     font-family:Arial;
     font-size:12px;
-    padding:10px 20px;
+    padding:8px 16px;
     text-decoration:none;
-    text-shadow:0px 1px 0px #000073;
 }
 .btn3:hover {
-    background-color:#1e2bb3;
+    background-color:#999999;
 }
 .btn3:active {
     position:relative;
