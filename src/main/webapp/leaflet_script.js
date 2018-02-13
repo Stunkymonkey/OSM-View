@@ -179,7 +179,7 @@ info.update = function (props) {
         '<br> <div class="start">Start: </div> ' + lat_start_short + ', '
         + lon_start_short + ' <br> <div class="goal"> Goal:  </div>'+ lat_goal_short + ', ' + lon_goal_short
         + '<br> <button class="btn3"onclick="swapStartGoal()">Swap Start and Goal</button>'
-        + '<br> <button class="btn3"onclick="drawRoute()">draw</button>';
+        + '<br> <button class="btn3"onclick="drawRoute()">draw Route</button>';
 };
 
 info.addTo(map);
