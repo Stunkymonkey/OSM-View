@@ -1,28 +1,27 @@
-package main;
+package backend;
 
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+public class Backend {
 
 	public static void main(String[] args) {
 		String filename = getFilename(args);
-		Main.init(filename);
+		Backend.init(filename);
 		Helper.Time("done reading");
-
+	}
+	
+	public static void cli() {
 		// for saving results
 		List<Integer> edges;
 		List<Integer> nodes;
 		Dijkstra d;
 		
-		/*
-		 * ENTER BELOW HERE FOR 
-		 */
 		int start = 0;
 		int goal = -1;
-		
 		// initialize and set start point
 		d = new Dijkstra(start);
+		
 		Scanner user_input = new Scanner( System.in );
 		while (true) {
 			System.out.print("Set start (-1 for exiting): ");
@@ -57,11 +56,11 @@ public class Main {
 		Helper.Time("");
 		new Fileread(filename);
 		NodesAndEdges.createArrays();
-		//Helper.Time("Offset-Array");
-		//Grid.createGrid();
-		//Helper.Time("Create-Grid");
+		Helper.Time("Offset-Array");
+		Grid.createGrid();
+		Helper.Time("Create-Grid");
 		Dijkstra.initDistanceTable();
-		//Helper.Time("Initialize Dijkstra-Tables");
+		Helper.Time("Initialize Dijkstra-Tables");
 	}
 	
 	/**
