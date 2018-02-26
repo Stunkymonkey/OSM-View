@@ -133,6 +133,7 @@ function swapStartGoal() {
         setStart(lat_tmp,lon_tmp);
     }
 }
+
 function sendData() {
     console.log("sendData");
     var xhr = new XMLHttpRequest();
@@ -141,17 +142,22 @@ function sendData() {
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("yeah");
 
             console.log(xhr.responseText);
             var json = JSON.parse(xhr.responseText);
-            console.log("this works");
+            
+            processing(json);
         }
     };
     var myObj = {"route": [ [lon_start,lat_start], [lon_goal,lat_goal] ]};
     var data = JSON.stringify(myObj);
     console.log(data);
     xhr.send(data);
+}
+var r;
+function processing(json) {
+	r = json.route;
+	console.log("this works");
 }
 
 function drawRoute() {
@@ -168,7 +174,7 @@ function drawRoute() {
             "properties": {
                 "name": "line"
             },
-            "coordinates": [[lon_start, lat_start], [lon_goal,lat_goal]]
+            "coordinates": r
 
         }];
         L.geoJson(myLines, {
