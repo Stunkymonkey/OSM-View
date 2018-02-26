@@ -3,21 +3,25 @@ package server;
 import java.util.LinkedList;
 
 public class Route {
-	LinkedList<Point> route;
+	LinkedList<Double[]> route = new LinkedList<Double[]>();
 
-	public Route(LinkedList<Point> path) {
-		this.route= path;
+	public Route(){}
+	
+	public Route(LinkedList<Double[]> route) {
+		this.route= route;
 	}
 
-	public LinkedList<Point> getPath() {
+	public LinkedList<Double[]> getRoute() {
 		return route;
 	}
 
 	@Override
 	public String toString() {
 		String result = "Route: ";
-		for(Point p: this.route) {
-			result += ", "  + p.toString();
+		for(Double[] p: this.route) {
+			for(Double d: p) {
+				result += ", "  + d.toString();
+			}
 		}
 		return result;
 	}

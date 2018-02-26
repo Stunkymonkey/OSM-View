@@ -2,6 +2,7 @@ package server;
 
 import java.util.LinkedList;
 
+import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,14 +14,14 @@ import javax.ws.rs.core.Response;
 import server.Point;
 import server.Route;
 
-@Path("/json")
+@ApplicationPath("api")
 public class JSONService {
 	
 	Point start = new Point();
 	Point goal = new Point();
 
 	@GET
-	@Path("/getRoute")
+	@Path("getRoute")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRoute() {
 
@@ -40,7 +41,7 @@ public class JSONService {
 	}
 
 	@POST
-	@Path("/setStart")
+	@Path("setStart")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response setStartJSON(Point start) {
 		this.start = start;
@@ -50,7 +51,7 @@ public class JSONService {
 	}
 	
 	@POST
-	@Path("/setGoal")
+	@Path("setGoal")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response setGoalJSON(Point goal) {
 		this.goal = goal;

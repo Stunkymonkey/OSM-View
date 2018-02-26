@@ -23,6 +23,7 @@ public class Main {
 	 * @param args
 	 * @throws IOException
 	 */
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) throws IOException {
 		Backend.main(args);
 		final HttpServer server = startServer();
@@ -44,7 +45,7 @@ public class Main {
 	 */
 	public static HttpServer startServer() {
 		// create a resource config that scans for JAX-RS resources and providers
-		// in main.OSM_View_G package
+		// in server package
 		final ResourceConfig rc = new ResourceConfig().packages("server");
 
 		// create and start a new instance of grizzly http server
