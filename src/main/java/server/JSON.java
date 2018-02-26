@@ -1,46 +1,60 @@
 package server;
 
 import java.util.LinkedList;
+import java.util.List;
 
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import backend.Grid;
+
 /**
- * Root resource (exposed at "setStart" path)
+ * Root resource (exposed at "route" path)
  */
 @Path("route")
 @Produces(MediaType.APPLICATION_JSON)
 public class JSON {
 
     /**
-     * Method handling HTTP GET requests. The returned object will be sent
-     * to the client as "text/plain" media type.
+     * Method handling HTTP POST requests. The returned object will be sent
+     * to the client as "application/json" media type.
      *
-     * @return String that will be returned as a text/plain response.
+     * @return String that will be returned as a application/json response.
      */
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Route route() {
-		LinkedList<Double[]> asdf = new LinkedList<Double[]>();
+    public Route route(Route question) {
+    	System.out.println("Request: " + question.toString());
+    	
+    	List<Integer> edges;
+    	List<Integer> nodes;
+    	
+		List<Double[]> result = new LinkedList<Double[]>();
+		
+		Double[] start_pos = question.getRoute().get(0);
+		Double[] goal_pos = question.getRoute().get(1);
+				
+		System.out.println("start-pos: " + start_pos[0].toString() + ", " + start_pos[1].toString());
+		System.out.println("goal-pos: " + goal_pos[0].toString() + ", " + goal_pos[1].toString());
+		
+		int start = Grid.getNearestNeighborNaive(start_pos[1], start_pos[0]);
+		int goal = Grid.getNearestNeighborNaive(goal_pos[1], goal_pos[0]);
+		//System.out.println(start == Grid.getNearestNeighbor(start_pos[1], start_pos[0]));
+		//System.out.println(goal == Grid.getNearestNeighbor(goal_pos[1], goal_pos[0]));
+		
+		System.out.println("start_nn: " + start);
+		System.out.println("goal_nn: " + goal);
+		
+		Main.d.setStart(start);
+		edges = Main.d.findWay(goal);
+		nodes = backend.Dijkstra.edgesToNodes(edges);
+		result = backend.Grid.getCoordsOfPoints(nodes);
 
-		Double[] point1 = new Double[2];
-		Double[] point2 = new Double[2];
-		Double[] point3 = new Double[2];
-		point1[0] = 43.444;
-		point1[1] = 42.444;
-		point2[0] = 44.444;
-		point2[1] = 45.444;
-		point3[0] = 46.444;
-		point3[1] = 47.444;
-		asdf.add(point1);
-		asdf.add(point2);
-		asdf.add(point3);
-
-		Route route = new Route(asdf);
+		Route route = new Route();
+		route.setRoute(result);
         return route;
     }
 }

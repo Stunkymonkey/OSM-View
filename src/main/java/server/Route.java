@@ -1,17 +1,18 @@
 package server;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class Route {
-	LinkedList<Double[]> route = new LinkedList<Double[]>();
+	List<Double[]> route = new LinkedList<Double[]>();
 
 	public Route(){}
 	
-	public Route(LinkedList<Double[]> route) {
-		this.route= route;
+	public void setRoute(List<Double[]> result) {
+		this.route= result;
 	}
 
-	public LinkedList<Double[]> getRoute() {
+	public List<Double[]> getRoute() {
 		return route;
 	}
 
@@ -19,9 +20,7 @@ public class Route {
 	public String toString() {
 		String result = "Route: ";
 		for(Double[] p: this.route) {
-			for(Double d: p) {
-				result += ", "  + d.toString();
-			}
+			result += " ["  + p[0].toString() + ", " + p[1].toString() + "] ,";
 		}
 		return result;
 	}

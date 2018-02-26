@@ -2,18 +2,17 @@ var bounds = [
     [47.3, 5.9], // Southwest coordinates
     [54.9, 16.9512215]  // Northeast coordinates
 ];
-var map = new L.map('map').setView([50.5, 9.125], 6).setMaxBounds(bounds);
+var map = new L.map('map').setView([50.5, 9.125], 6);//.setMaxBounds(bounds);
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
     center: map.getBounds().getCenter(),
     maxZoom: 18,
-    minZoom: 6,
+    minZoom: 2,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
     id: 'mapbox.streets',
     zoom: 7,
-    maxBounds: bounds, // Sets bounds as max
     maxBoundsViscosity: 1.0
 }).addTo(map);
 map.doubleClickZoom.disable();
@@ -135,46 +134,32 @@ function swapStartGoal() {
 }
 
 function sendData() {
-    console.log("sendData");
     var xhr = new XMLHttpRequest();
     var url = "http://localhost:8081/api/route";
     xhr.open("POST",url,true);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-
-            console.log(xhr.responseText);
             var json = JSON.parse(xhr.responseText);
-            
             processing(json);
         }
     };
     var myObj = {"route": [ [lon_start,lat_start], [lon_goal,lat_goal] ]};
     var data = JSON.stringify(myObj);
-    console.log(data);
+	console.log("request: " + data);
     xhr.send(data);
 }
 var r;
 function processing(json) {
-	r = json.route;
-	console.log("this works");
-}
-
-function drawRoute() {
-    sendData();
-
-    if (route_count) {
-        map.removeLayer(layerlist["line"]);
-    }
-
-    if (goal_count && start_count) {
+	console.log("answer: " + json.route);
+	if (goal_count && start_count) {
         route_count = true;
         var myLines = [{
             "type": "LineString",
             "properties": {
                 "name": "line"
             },
-            "coordinates": r
+            "coordinates": json.route
 
         }];
         L.geoJson(myLines, {
@@ -189,7 +174,15 @@ function drawRoute() {
             }
         }).addTo(map);
     }
+	console.log("done painting");
+}
 
+function drawRoute() {
+    sendData();
+
+    if (route_count) {
+        map.removeLayer(layerlist["line"]);
+    }
 }
 
 var info = L.control();
