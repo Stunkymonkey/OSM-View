@@ -82,7 +82,7 @@ function onMapClick(e){
 }
 
 function setStart(lat,lon) {
-    if (thename != undefined && start_count != false) {
+    if (thename !== undefined && start_count !== false) {
         map.removeLayer(layerlist["start"]);
     }
     if (route_count) {
@@ -96,7 +96,7 @@ function setStart(lat,lon) {
     start(lat,lon);
 }
 function setGoal(lat,lon) {
-    if (thename != undefined && goal_count != false) {
+    if (thename !== undefined && goal_count !== false) {
         map.removeLayer(layerlist["goal"]);
     }
     if (route_count) {
@@ -133,8 +133,30 @@ function swapStartGoal() {
         setStart(lat_tmp,lon_tmp);
     }
 }
-
+function sendData() {
+    console.log("sendData");
+    var xhr = new XMLHttpRequest();
+    var url = "localhost:8081/api/route";
+    xhr.open("POST",url,true);
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var json = JSON.parse(xhr.responseText);
+            console.log("this works");
+        }
+    };
+    var myObj = {"start": [lon_start,lat_start], "goal": [lon_goal,lat_goal]};
+    var data = JSON.stringify(myObj);
+    xhr.send(data);
+}
+function receiveData() {
+    var route = [];
+    var obj = JSON.parse(route);
+}
 function drawRoute() {
+    sendData();
+    //receiveData();
+
     if (route_count) {
         map.removeLayer(layerlist["line"]);
     }
