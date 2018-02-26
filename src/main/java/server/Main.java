@@ -44,19 +44,13 @@ public class Main {
 	 * @return Grizzly HTTP server.
 	 */
 	public static HttpServer startServer() {
-		// create a resource config that scans for JAX-RS resources and providers
-		// in server package
-		final ResourceConfig rc = new ResourceConfig().packages("server");
-		
+		ResourceConfig rc = new ResourceConfig().packages("server");
 		rc.register(new CORSFilter());
-
-		// create and start a new instance of grizzly http server
-		// exposing the Jersey application at BASE_URI
 		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
 
 		server.getServerConfiguration().addHttpHandler(new org.glassfish.grizzly.http.server.CLStaticHttpHandler(
 				Main.class.getClassLoader(), "/"), "/");
-
+		
 		return server;
 	}
 }

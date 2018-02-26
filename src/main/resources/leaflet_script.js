@@ -136,26 +136,26 @@ function swapStartGoal() {
 function sendData() {
     console.log("sendData");
     var xhr = new XMLHttpRequest();
-    var url = "localhost:8081/api/route";
+    var url = "http://localhost:8081/api/route";
     xhr.open("POST",url,true);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log("yeah");
+
+            console.log(xhr.responseText);
             var json = JSON.parse(xhr.responseText);
             console.log("this works");
         }
     };
-    var myObj = {"start": [lon_start,lat_start], "goal": [lon_goal,lat_goal]};
+    var myObj = {"route": [ [lon_start,lat_start], [lon_goal,lat_goal] ]};
     var data = JSON.stringify(myObj);
+    console.log(data);
     xhr.send(data);
 }
-function receiveData() {
-    var route = [];
-    var obj = JSON.parse(route);
-}
+
 function drawRoute() {
     sendData();
-    //receiveData();
 
     if (route_count) {
         map.removeLayer(layerlist["line"]);

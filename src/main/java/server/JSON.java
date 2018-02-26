@@ -21,18 +21,11 @@ public class JSON {
      *
      * @return String that will be returned as a text/plain response.
      */
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public String route(Route route) {
-		String result = "Route is : " + route;
-        return result;
-    }
     
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Route route() {
 		LinkedList<Double[]> asdf = new LinkedList<Double[]>();
-		
 
 		Double[] point1 = new Double[2];
 		Double[] point2 = new Double[2];
