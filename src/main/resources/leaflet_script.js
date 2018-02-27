@@ -42,6 +42,7 @@ var redIcon = new L.Icon({
 
 var layerlist = {};
 map.on('click', onMapClick);
+//Called from SetStart/SetGoal. Creates GeoJson object for the start or goal and adds it to the map.
 function createGeo(lat, lon) {
     geojsonFeature = {
         "type": "Feature",
