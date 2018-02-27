@@ -69,7 +69,7 @@ function createGeo(lat, lon) {
         }
     }).addTo(map);
 }
-
+//Opens Popup on Mouseclick on the map. (temp) Saves x and y (lon and lat) coordinates of the clicked point.
 function onMapClick(e){
     lat = e.latlng.lat;
     lon = e.latlng.lng;
@@ -79,7 +79,7 @@ function onMapClick(e){
             + '<button class="btn2" onclick="setGoal(lat,lon)" ">Set Goal</button> ')
         .openOn(map);
 }
-
+//Called on ButtonClick [Set Start] from Popup. Creates geojson object [Start] and adds it to a layerlist. deletes the existing one.
 function setStart(lat,lon) {
     if (geoObjectName !== undefined && isStartDrawn !== false) {
         map.removeLayer(layerlist["start"]);
@@ -94,6 +94,7 @@ function setStart(lat,lon) {
     createGeo(lat,lon);
     start(lat,lon);
 }
+//Called on ButtonClick [Set Goal] from Popup. Creates geojson object [Goal] and adds it to a layerlist. deletes the existing one.
 function setGoal(lat,lon) {
     if (geoObjectName !== undefined && isGoalDrawn !== false) {
         map.removeLayer(layerlist["goal"]);
@@ -108,7 +109,7 @@ function setGoal(lat,lon) {
     createGeo(lat,lon);
     goal(lat,lon);
 }
-
+//called from SetStart/SetGoal saves the coordinates. updates the infopannel in the topright corner
 function start(lat,lon) {
     lat_start = lat;
     lon_start = lon;
@@ -123,7 +124,7 @@ function goal(lat,lon) {
     lon_goal_short= lon.toFixed(3);
     info.update();
 }
-
+//Called on ButtonClick [Swap Start and Goal]. Does exactly that.
 function swapStartGoal() {
     if (isGoalDrawn && isStartDrawn) {
         var lat_tmp = lat_goal;
@@ -132,14 +133,14 @@ function swapStartGoal() {
         setStart(lat_tmp,lon_tmp);
     }
 }
-
+//Called on ButtonClick [Draw Route]. Calls function sendData and deletes the existing Route.
 function drawRoute() {
     sendData();
     if (isRouteDrawn) {
         map.removeLayer(layerlist["line"]);
     }
 }
-
+//Called from function sendData. Opens Post request for Server. Sends start and goal coordinates. Waits for it to be ready. Receives Route coordinates.
 function sendData() {
     var xhr = new XMLHttpRequest();
     var url = "http://localhost:8081/api/route";
@@ -156,6 +157,7 @@ function sendData() {
 	console.log("request: " + data);
     xhr.send(data);
 }
+//Called from sendData. Creates Geojsonobject for the received Route.
 function createGeoJsonRoute(json) {
 	console.log("answer: " + json.route);
 	if (isGoalDrawn && isStartDrawn) {
@@ -182,7 +184,7 @@ function createGeoJsonRoute(json) {
     }
 	console.log("done painting");
 }
-
+//Infopannel in the topright corner.
 var info = L.control();
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
