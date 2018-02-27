@@ -51,9 +51,8 @@ public class Main {
 	 */
 	public static HttpServer startServer() {
 		// serching in server for JAX-RS routes
-		ResourceConfig rc = new ResourceConfig().packages("server");
-		// adding cors header
-		rc.register(new CORSFilter());
+		final ResourceConfig rc = new ResourceConfig().packages("server").register(new CORSFilter());
+
 		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
 		// adding static files to /
 		server.getServerConfiguration().addHttpHandler(
