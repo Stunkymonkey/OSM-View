@@ -3,16 +3,16 @@ package backend;
 public class NodesAndEdges {
 
 	/**
-	 * fill all arrays with given 
+	 * fill all arrays with given
 	 */
 	public static void createArrays() {
 		initArrays();
 		createNodeTable();
 		createEdgeTables();
-		//Helper.Time("Read File");
+		// Helper.Time("Read File");
 		createOffsetTable();
 	}
-	
+
 	/**
 	 * initialize all arrays
 	 */
@@ -37,7 +37,7 @@ public class NodesAndEdges {
 
 			Data.x_dim[i] = Double.parseDouble(tmpArray[2]);
 			Data.y_dim[i] = Double.parseDouble(tmpArray[3]);
-			
+
 			if (Data.x_dim[i] > Data.max_x) {
 				Data.max_x = Data.x_dim[i];
 			}

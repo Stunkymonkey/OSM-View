@@ -19,12 +19,18 @@ public class Grid {
 	@SuppressWarnings("unchecked")
 	private static void initGrid() {
 		if (Data.AmountNodes < 10) {
-			Data.gridAmount = Data.AmountNodes;
+			Data.gridAmount = 3;
 		} else {
-			Data.gridAmount = Data.AmountNodes / 100;
+			Data.gridAmount = Data.AmountNodes / (int) (Data.AmountNodes * 0.00001);
 		}
+		// System.out.println("Data.gridAmount: " + Data.gridAmount);
+		// System.out.println("Data.AmountNodes: " + Data.AmountNodes);
 		Data.gridX = (ArrayList<Integer>[]) new ArrayList[Data.gridAmount];
 		Data.gridY = (ArrayList<Integer>[]) new ArrayList[Data.gridAmount];
+		for (int i = 0; i < Data.gridAmount; i++) {
+			Data.gridX[i] = new ArrayList<Integer>();
+			Data.gridY[i] = new ArrayList<Integer>();
+		}
 		Data.gridSizeX = Data.max_x - Data.min_x;
 		Data.gridSizeY = Data.max_y - Data.min_y;
 		Data.gridStepSizeX = Data.gridSizeX / Data.gridAmount;
@@ -33,6 +39,7 @@ public class Grid {
 
 	/**
 	 * calculates position of node in grid
+	 * 
 	 * @param x
 	 * @param y
 	 * @return
@@ -41,6 +48,7 @@ public class Grid {
 		int x_result, y_result;
 		x_result = (int) ((x - Data.min_x) / Data.gridStepSizeX);
 		y_result = (int) ((y - Data.min_y) / Data.gridStepSizeY);
+		// edge cases are handled below
 		if (x_result >= Data.gridAmount) {
 			x_result = Data.gridAmount - 1;
 		} else if (x_result < 0) {
@@ -61,12 +69,6 @@ public class Grid {
 		int[] tmp = new int[2];
 		for (int i = 0; i < Data.AmountNodes; i++) {
 			tmp = getGridPosition(Data.x_dim[i], Data.y_dim[i]);
-			if (Data.gridX[tmp[0]] == null) {
-				Data.gridX[tmp[0]] = new ArrayList<Integer>();
-			}
-			if (Data.gridY[tmp[1]] == null) {
-				Data.gridY[tmp[1]] = new ArrayList<Integer>();
-			}
 			Data.gridX[tmp[0]].add(i);
 			Data.gridY[tmp[1]].add(i);
 		}
@@ -74,6 +76,7 @@ public class Grid {
 
 	/**
 	 * calculates distance of two points
+	 * 
 	 * @param x1
 	 * @param y1
 	 * @param x2
@@ -86,6 +89,7 @@ public class Grid {
 
 	/**
 	 * returns integer, that are in both lists
+	 * 
 	 * @param x_index
 	 * @param y_index
 	 * @return
@@ -97,6 +101,7 @@ public class Grid {
 
 	/**
 	 * get nearest node to coordinates
+	 * 
 	 * @param x
 	 * @param y
 	 * @return
@@ -120,50 +125,45 @@ public class Grid {
 	}
 
 	/**
-	 * return points near to grid position
+	 * return set of points near to grid position
+	 * 
 	 * @param x
 	 * @param y
 	 * @return
 	 */
 	private static ArrayList<Integer> getPointsInBound(int x, int y) {
-		int range = 1;
+		int range = 0;
 		ArrayList<Integer> points = new ArrayList<Integer>();
 		ArrayList<Integer> points_x = new ArrayList<Integer>();
 		ArrayList<Integer> points_y = new ArrayList<Integer>();
-		int x_index;
-		int y_index;
-		//System.out.println("amount: " + Data.gridAmount);
 		while (points.isEmpty()) {
-			System.out.println("range: " + range);
-			for (int i = 0; i < range; i++) {
-				x_index = x + range/2 - i;
-				if (x_index >= 0 && x_index < Data.gridAmount) {
-					//System.out.println("x_i: " + x_index);
-					//System.out.println("array_size_x: " + Data.gridY[x_index].size());
-					for (int index: Data.gridX[x_index]) {
-						points_x.add(index);
-					}
+			// System.out.println("range: " + range);
+			if (range == 0) {
+				points_x.addAll(Data.gridX[x]);
+				points_y.addAll(Data.gridY[y]);
+			} else {
+				if (x - range < Data.gridAmount && x - range >= 0) {
+					points_x.addAll(Data.gridX[x - range]);
 				}
-				y_index = y + range/2 - i;
-				if (y_index >= 0 && y_index < Data.gridAmount) {
-					//System.out.println("y_i: " + y_index);
-					//System.out.println("array_size_y: " + Data.gridY[y_index].size());
-					for (int index: Data.gridY[y_index]) {
-						points_y.add(index);
-					}
+				if (x + range < Data.gridAmount && x + range >= 0) {
+					points_x.addAll(Data.gridX[x + range]);
 				}
-				//System.out.println("indexes appended");
+				if (y - range < Data.gridAmount && y - range >= 0) {
+					points_y.addAll(Data.gridY[y - range]);
+				}
+				if (y + range < Data.gridAmount && y + range >= 0) {
+					points_y.addAll(Data.gridY[y + range]);
+				}
 			}
-			System.out.println("points: " + calcIntersection(points_x, points_y));
 			points = calcIntersection(points_x, points_y);
-			range += 2;
+			range++;
 		}
-		// maybe we should add more grids around them
 		return points;
 	}
-	
+
 	/**
 	 * return positions of nodes
+	 * 
 	 * @return
 	 */
 	public static LinkedList<Double[]> getCoordsOfPoints(List<Integer> nodes) {
@@ -176,7 +176,14 @@ public class Grid {
 		}
 		return result;
 	}
-	
+
+	/**
+	 * stupid version, which calculates distance to all nodes
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public static int getNearestNeighborNaive(double x, double y) {
 		double dist = Double.MAX_VALUE;
 		int id = -1;

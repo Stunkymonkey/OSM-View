@@ -39,9 +39,10 @@ public class Dijkstra {
 			return this.weight - tup.weight;
 		}
 	}
-	
+
 	/**
 	 * set the starting point for Dijkstra
+	 * 
 	 * @param start
 	 */
 	public Dijkstra(int start) {
@@ -62,7 +63,9 @@ public class Dijkstra {
 
 	/**
 	 * find goal from given start using Dijkstra
-	 * @param goal set it to a node-index OR set it to -1 to run it on full graph
+	 * 
+	 * @param goal
+	 *            set it to a node-index OR set it to -1 to run it on full graph
 	 * @return
 	 */
 	public List<Integer> findWay(int goal) {
@@ -72,7 +75,7 @@ public class Dijkstra {
 			return new LinkedList<Integer>();
 		}
 		// check if start is defined
-		else if (!validStart){
+		else if (!validStart) {
 			System.out.println("Start not defined");
 			return new LinkedList<Integer>();
 		}
@@ -102,9 +105,10 @@ public class Dijkstra {
 		}
 		return new LinkedList<Integer>();
 	}
-	
+
 	/**
-	 * reconstruct the edges of the shortest path 
+	 * reconstruct the edges of the shortest path
+	 * 
 	 * @param shortestPath
 	 * @param start
 	 * @param goal
@@ -121,9 +125,10 @@ public class Dijkstra {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * convert edges to nodes
+	 * 
 	 * @param edges
 	 * @return
 	 */
@@ -138,9 +143,10 @@ public class Dijkstra {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * get distance if goal was visited
+	 * 
 	 * @param edges
 	 * @return
 	 */
@@ -151,9 +157,10 @@ public class Dijkstra {
 		System.out.println("Not visited yet");
 		return Integer.MAX_VALUE;
 	}
-	
+
 	/**
 	 * set new start point
+	 * 
 	 * @param start
 	 * @return
 	 */
@@ -177,7 +184,7 @@ public class Dijkstra {
 		this.distance[start] = 0;
 		return true;
 	}
-	
+
 	/**
 	 * set all distances to "infinity"
 	 */

@@ -17,44 +17,47 @@ import backend.Grid;
 @Produces(MediaType.APPLICATION_JSON)
 public class JSON {
 
-    /**
-     * Method handling HTTP POST requests. The returned object will be sent
-     * to the client as "application/json" media type.
-     *
-     * @return String that will be returned as a application/json response.
-     */
-    
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Route route(Route question) {
-    	System.out.println("Request: " + question.toString());
-    	
-    	List<Integer> edges;
-    	List<Integer> nodes;
-    	
+	/**
+	 * Method handling HTTP POST requests. The returned object will be sent to the
+	 * client as "application/json" media type.
+	 *
+	 * @return String that will be returned as a application/json response.
+	 */
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Route route(Route question) {
+		long totalrequestTime = System.currentTimeMillis();
+		// outputting request
+		System.out.println("Request: " + question.toString());
+
+		// init lists for results
+		List<Integer> edges;
+		List<Integer> nodes;
+
 		List<Double[]> result = new LinkedList<Double[]>();
-		
+
+		// get coordinates of request
 		Double[] start_pos = question.getRoute().get(0);
 		Double[] goal_pos = question.getRoute().get(1);
-				
-		System.out.println("start-pos: " + start_pos[0].toString() + ", " + start_pos[1].toString());
-		System.out.println("goal-pos: " + goal_pos[0].toString() + ", " + goal_pos[1].toString());
-		
+
+		// get nearest neighbors of given coordinates
 		int start = Grid.getNearestNeighborNaive(start_pos[1], start_pos[0]);
 		int goal = Grid.getNearestNeighborNaive(goal_pos[1], goal_pos[0]);
-		//System.out.println(start == Grid.getNearestNeighbor(start_pos[1], start_pos[0]));
-		//System.out.println(goal == Grid.getNearestNeighbor(goal_pos[1], goal_pos[0]));
-		
-		System.out.println("start_nn: " + start);
-		System.out.println("goal_nn: " + goal);
-		
+
+		// run Dijkstra on graph
 		Main.d.setStart(start);
 		edges = Main.d.findWay(goal);
+		// get nodes from edges
 		nodes = backend.Dijkstra.edgesToNodes(edges);
+		// get coordinates from nodes
 		result = backend.Grid.getCoordsOfPoints(nodes);
 
+		// return response with route
 		Route route = new Route();
 		route.setRoute(result);
-        return route;
-    }
+		System.out.println(
+				String.format("Answered Request in : %ds", ((System.currentTimeMillis() - totalrequestTime) / 1000)));
+		return route;
+	}
 }

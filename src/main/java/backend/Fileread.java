@@ -12,6 +12,7 @@ public class Fileread {
 
 	/**
 	 * open file with bufferedReader
+	 * 
 	 * @param fileName
 	 */
 	public Fileread(String fileName) {

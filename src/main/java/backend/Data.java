@@ -12,9 +12,13 @@ public class Data {
 	// Data from file
 	public static int AmountNodes;
 	public static int AmountEdges;
+	// index based
 	public static int[] source, target, weight;
+	// for faster lookups in source target
 	public static int[] OffsetTable;
+	// coordinates
 	public static double[] x_dim, y_dim;
+	// max and min of coordinates
 	public static double max_x = Double.MIN_VALUE;
 	public static double max_y = Double.MIN_VALUE;
 	public static double min_x = Double.MAX_VALUE;
@@ -28,7 +32,7 @@ public class Data {
 	public static double gridStepSizeY;
 	public static ArrayList<Integer>[] gridX;
 	public static ArrayList<Integer>[] gridY;
-	
+
 	// distances will get set to infinity
 	public static int[] dijkstraDistances;
 }

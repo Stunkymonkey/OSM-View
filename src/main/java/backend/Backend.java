@@ -10,19 +10,19 @@ public class Backend {
 		Backend.init(filename);
 		Helper.Time("done reading");
 	}
-	
+
 	public static void cli() {
 		// for saving results
 		List<Integer> edges;
 		List<Integer> nodes;
 		Dijkstra d;
-		
+
 		int start = 0;
 		int goal = -1;
 		// initialize and set start point
 		d = new Dijkstra(start);
-		
-		Scanner user_input = new Scanner( System.in );
+
+		Scanner user_input = new Scanner(System.in);
 		while (true) {
 			System.out.print("Set start (-1 for exiting): ");
 			start = user_input.nextInt();
@@ -50,6 +50,7 @@ public class Backend {
 
 	/**
 	 * prepare everything of the graph to be able to execute Dijkstra
+	 * 
 	 * @param filename
 	 */
 	public static void init(String filename) {
@@ -57,12 +58,12 @@ public class Backend {
 		new Fileread(filename);
 		NodesAndEdges.createArrays();
 		Helper.Time("Offset-Array");
-		Grid.createGrid();
-		Helper.Time("Create-Grid");
+		// Grid.createGrid();
+		// Helper.Time("Create-Grid");
 		Dijkstra.initDistanceTable();
 		Helper.Time("Initialize Dijkstra-Tables");
 	}
-	
+
 	/**
 	 * return the filename we are using
 	 */
