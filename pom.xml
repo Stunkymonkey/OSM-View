@@ -94,7 +94,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>main.OSM_View_G.Main</mainClass>
+                    <mainClass>server.Main</mainClass>
+                    <includeScope>runtime</includeScope>
                 </configuration>
             </plugin>
         </plugins>
