@@ -27,6 +27,7 @@ public class JSON {
 	 */
 
 	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Route route(Route question) {
 		long totalrequestTime = System.currentTimeMillis();

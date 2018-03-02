@@ -1,1 +1,5 @@
-java -Xmx4098m -jar ./target/OSM-View-G-jar-with-dependencies.jar MV.fmi
+#!/bin/bash
+
+BASE="$(dirname $(readlink -f $0))"
+
+java -Xmx4098m -jar $BASE/target/OSM-View-G.jar $BASE/MV.fmi
