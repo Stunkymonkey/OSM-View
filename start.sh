@@ -2,4 +2,4 @@
 
 BASE="$(dirname $(readlink -f $0))"
 
-java -Xmx4098m -jar $BASE/target/OSM-View-G.jar
+java -Xmx4098m -jar $BASE/target/OSM-View-G.jar $1
